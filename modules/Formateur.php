@@ -140,4 +140,54 @@ class Formateur
             return false;
         }
     }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    
+
+    /**
+     * Get the value of listFilieres
+     */ 
+    public function getListFilieres()
+    {
+        return $this->listFilieres;
+    }
+
+    /**
+     * Set the value of listFilieres
+     *
+     * @return  self
+     */ 
+    public function setListFilieres($listFilieres)
+    {
+        $this->listFilieres = $listFilieres;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of password
+     */ 
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * Set the value of password
+     *
+     * @return  self
+     */ 
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
 }

@@ -58,7 +58,7 @@ class ModuleAssurer
     /**
      * @return [object Object]
      */
-    public function module(): [object Object]
+    public function module()
     {
         // TODO implement here
         return null;
@@ -67,7 +67,7 @@ class ModuleAssurer
     /**
      * @return [object Object]
      */
-    public function group(): [object Object]
+    public function group()
     {
         // TODO implement here
         return null;
@@ -76,10 +76,33 @@ class ModuleAssurer
     /**
      * @return [object Object]
      */
-    public function formateur(): [object Object]
+    public function formateur()
     {
         // TODO implement here
         return null;
     }
 
+    public static function retournerModules(PDO $conn, int $idFiliere, int $idFormateur)
+    {
+        try {
+            $query = "SELECT * 
+            from MODULE md 
+            WHERE md.idFiliere = ?
+            AND	md.id in (SELECT ms.idModule 
+                          from ModuleAssurer ms 
+                          WHERE ms.idFormateur = ?)";
+            $pdoS = $conn->prepare($query);
+
+            $pdoS->execute([
+                $idFormateur,
+                $idFormateur,
+            ]);
+
+
+            return $pdoS->fetchAll(PDO::FETCH_CLASS, 'Module');
+        } catch (\Throwable $th) {
+            print_r($th);
+            return false;
+        }
+    }
 }
