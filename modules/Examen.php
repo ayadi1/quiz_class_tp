@@ -9,6 +9,17 @@ class Examen
     /** @var int */
     private int $id;
 
+    /** @var int */
+    private int $idCompetence;
+
+    /** @var string */
+    private string $label;
+
+    /** @var date */
+    private  $dateCreation;
+
+    /** @var date */
+    private  $datePassation;
     /**
      * Default constructor
      */
@@ -18,21 +29,39 @@ class Examen
     }
 
     /**
-     * @return [object Object]
+     * @return Examen
      */
-    public function save(): [object Object]
+    public function save(PDO $conn)
     {
-        // TODO implement here
-        return null;
+        try {
+            $query = "UPDATE `EXAMEN` 
+                        SET `label`=?,
+                        `datePassation`=? 
+                        WHERE `id` = ?";
+            $pdoS = $conn->prepare($query);
+            $pdoS->execute([
+                $this->label,
+                $this->datePassation,
+                $this->id,
+            ]);
+            return $this;
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 
     /**
-     * @return [object Object]
+     * @return self
      */
-    public function update(): [object Object]
+    public function update(PDO $conn , string $label, $datePassation)
     {
-        // TODO implement here
-        return null;
+        try {
+            $this->setLabel($label);
+            $this->setDatePassation($datePassation);
+            return $this->save($conn);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 
     /**
@@ -56,10 +85,110 @@ class Examen
     /**
      * @return Examen|bool
      */
-    public static function findByCode(): Examen|bool
+    public static function findByCode()
     {
         // TODO implement here
         return null;
     }
 
+
+    /**
+     * Get the value of id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of idCompetence
+     */
+    public function getIdCompetence()
+    {
+        return $this->idCompetence;
+    }
+
+    /**
+     * Set the value of idCompetence
+     *
+     * @return  self
+     */
+    public function setIdCompetence($idCompetence)
+    {
+        $this->idCompetence = $idCompetence;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of label
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
+     * Set the value of label
+     *
+     * @return  self
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of datePassation
+     */
+    public function getDatePassation()
+    {
+        return $this->datePassation;
+    }
+
+    /**
+     * Set the value of datePassation
+     *
+     * @return  self
+     */
+    public function setDatePassation($datePassation)
+    {
+        $this->datePassation = $datePassation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of dateCreation
+     */
+    public function getDateCreation()
+    {
+        return $this->dateCreation;
+    }
+
+    /**
+     * Set the value of dateCreation
+     *
+     * @return  self
+     */
+    public function setDateCreation($dateCreation)
+    {
+        $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
 }

@@ -123,9 +123,10 @@ class Formateur
     public function retournerFilieres(PDO $conn)
     {
         try {
-            $query = "SELECT * from FILIERE fl where 
-            fl.id in ( SELECT ff.idFiliere FROM FORMATEUR_FILIERE ff 
-                     WHERE ff.idFormateur = ?
+            $query = "SELECT * from FILIERE fl 
+            where fl.id in ( SELECT ff.idFiliere 
+                            FROM FORMATEUR_FILIERE ff
+                            WHERE ff.idFormateur = ?
             )";
             $pdoS = $conn->prepare($query);
 
@@ -133,7 +134,7 @@ class Formateur
                 $this->id
             ]);
 
-
+            
             return $pdoS->fetchAll(PDO::FETCH_CLASS,'Filiere');
         } catch (\Throwable $th) {
             print_r($th);

@@ -10,7 +10,7 @@ class Competence
     private int $id;
 
     /** @var String */
-    private String $LIB_COMP;
+    private String $libCompetence;
 
     /** @var int */
     private int $idModule;
@@ -85,7 +85,25 @@ class Competence
             $pdoS = $conn->prepare($query);
 
             $pdoS->execute([
-                $idCompetence,
+                $idCompetence,  
+            ]);
+
+
+            return $pdoS->fetchAll(PDO::FETCH_CLASS, 'Examen');
+        } catch (\Throwable $th) {
+            print_r($th);
+            return false;
+        }
+    }
+    public  function returner_Examens(PDO $conn)
+    {
+        try {
+            $query = "SELECT * FROM `EXAMEN` 
+            WHERE  `idCompetence` = ?";
+            $pdoS = $conn->prepare($query);
+
+            $pdoS->execute([
+                $this->id,
 
             ]);
 
@@ -98,21 +116,21 @@ class Competence
     }
 
     /**
-     * Get the value of LIB_COMP
+     * Get the value of libCompetence
      */ 
     public function getLIB_COMP()
     {
-        return $this->LIB_COMP;
+        return $this->libCompetence;
     }
 
     /**
-     * Set the value of LIB_COMP
+     * Set the value of libCompetence
      *
      * @return  self
      */ 
-    public function setLIB_COMP($LIB_COMP)
+    public function setLIB_COMP($libCompetence)
     {
-        $this->LIB_COMP = $LIB_COMP;
+        $this->libCompetence = $libCompetence;
 
         return $this;
     }
@@ -130,9 +148,9 @@ class Competence
      *
      * @return  self
      */ 
-    public function setId($id)
+    public function setId($idC)
     {
-        $this->id = $id;
+        $this->id = $idC;
 
         return $this;
     }

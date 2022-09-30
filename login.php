@@ -1,3 +1,8 @@
+<?php
+  if(isset($_GET["message"])){
+    $message = $_GET["message"];
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,6 +25,9 @@
 <body>
   <div class="container w-50 mt-5">
     <form class="mt-5 bg-light p-5" method="POST" action="./router/loginRouter.php">
+      <div>
+      <?php echo $message;?>
+      </div>
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Email address</label>
         <div class="row">

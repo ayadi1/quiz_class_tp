@@ -9,20 +9,24 @@ class LoginController
     {
         $this->conn = new Connection();
     }
-    
+
     // public function store(string $email, string $password, string $type, Db $db)
     public function stor(string $email, string $password, string $type)
     {
-        $userObj = null;
+        $user = null;
         if ($type == "formateur") {
-            $userObj = Formateur::login($this->conn->connect(), $email, $password);
+            $user = Formateur::login($this->conn->connect(), $email, $password);
         } else {
-
-            $userObj = Stagiaire::login($this->conn->connect(), $email, $password);
+            $user = Stagiaire::login($this->conn->connect(), $email, $password);
         }
         // header("location:MenuPrincipale.php");
-        //print_r("Welcome Formateur ,".$userObj->getNom());
-        $_SESSION['user'] = serialize($userObj);
-        header("location:../menu");
+        //print_r("Welcome Formateur ,".$user->getNom());
+        if ($user != false) {
+            //if($user){
+            $_SESSION['user'] = serialize($user);
+            header("location:../menu/index.php");
+        } else{
+            header("location: ../login.php?message=Utilisateur ou mot de passe incorrect");
+        }
     }
 }

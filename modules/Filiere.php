@@ -10,7 +10,7 @@ class Filiere
     private int $id;
 
     /** @var string */
-    private string $LIB_Filiere;
+    private string $libFiliere;
 
     /** @var array */
     private array $listFormateurs;
@@ -111,9 +111,9 @@ class Filiere
     /**
      * Get the value of LIB_Filiere
      */ 
-    public function getLIB_Filiere()
+    public function getLibFiliere()
     {
-        return $this->LIB_Filiere;
+        return $this->libFiliere;
     }
 
     /**
@@ -121,9 +121,9 @@ class Filiere
      *
      * @return  self
      */ 
-    public function setLIB_Filiere($LIB_Filiere)
+    public function setLIB_Filiere($libFiliere)
     {
-        $this->LIB_Filiere = $LIB_Filiere;
+        $this->libFiliere = $libFiliere;
 
         return $this;
     }

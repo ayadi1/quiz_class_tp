@@ -10,7 +10,7 @@ class Module
     private int $id;
 
     /** @var string */
-    private string $lable;
+    private string $libModule;
     
     /** @var int */
     private string $idFiliere;
@@ -139,9 +139,9 @@ class Module
     /**
      * Get the value of lable
      */ 
-    public function getLable()
+    public function getLibModule()
     {
-        return $this->lable;
+        return $this->libModule;
     }
 
     /**
@@ -149,9 +149,9 @@ class Module
      *
      * @return  self
      */ 
-    public function setLable($lable)
+    public function setLibModule($libModule)
     {
-        $this->lable = $lable;
+        $this->libModule = $libModule;
 
         return $this;
     }
