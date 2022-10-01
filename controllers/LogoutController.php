@@ -4,7 +4,7 @@ class LogoutController
 {
 
     // public function store(string $email, string $password, string $type, Db $db)
-    public static function logOut()
+    public static function logout(): void
     {
         // remove all session variables
         session_unset();
