@@ -1,8 +1,14 @@
 <?php
 session_start();
-$user = unserialize($_SESSION['user']);
+
 require_once '../modules/Formateur.php';
 require_once '../modules/Stagiaire.php';
+
+$user = unserialize($_SESSION['user']);
+
+if(!isset($_SESSION["user"])){
+    header("Location: ../login.php");
+}
 
 $type = null;
 if ($user instanceof  Formateur) {
@@ -29,3 +35,5 @@ $_SESSION['user'] = serialize($user);
         </ul>
     </nav>
 <?php endif; ?>
+
+<a href="../router/logoutRouter.php"> Deconnecter </a>

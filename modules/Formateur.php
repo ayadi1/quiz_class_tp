@@ -74,7 +74,7 @@ class Formateur
     /**
      * @return [object Object]
      */
-    public static function findByid(int $id)
+    public static function findById(int $id)
     {
         // TODO implement here
         return $id;
@@ -95,7 +95,7 @@ class Formateur
     {
 
         try {
-            $query = "SELECT * FROM `FORMATEUR` WHERE `email` = ? ";
+            $query = "SELECT * FROM `formateur` WHERE `email` = ? ";
             $pdoS = $conn->prepare($query);
 
             $pdoS->execute([
@@ -106,7 +106,7 @@ class Formateur
             if ($pdoS->rowCount() > 0) {
                 $formateur_row = $pdoS->fetch();
 
-                if ($formateur_row->password == $password) {
+                if ($formateur_row->password === $password) {
                     return new self(
                         $formateur_row->id,
                         $formateur_row->nom,
@@ -120,7 +120,7 @@ class Formateur
             return false;
         }
     }
-    public function retournerFilieres(PDO $conn)
+    public function retournerFilieres(PDO $conn): bool|array
     {
         try {
             $query = "SELECT * from FILIERE fl 
@@ -137,7 +137,6 @@ class Formateur
             
             return $pdoS->fetchAll(PDO::FETCH_CLASS,'Filiere');
         } catch (\Throwable $th) {
-            print_r($th);
             return false;
         }
     }

@@ -1,9 +1,13 @@
 <?php
 
+/**
+ *
+ */
 class LogoutController
 {
-
-    // public function store(string $email, string $password, string $type, Db $db)
+    /**
+     * @return void
+     */
     public static function logout(): void
     {
         // remove all session variables
