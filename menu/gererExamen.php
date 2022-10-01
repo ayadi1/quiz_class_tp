@@ -46,19 +46,19 @@ if (isset($_POST["update"])) {
 if (isset($_POST["filiere"])) {
     $idFiliere = $_POST["filiere"];
     $_SESSION['filiere'] = $idFiliere;
-    $modules = ModuleAssurer::retournerModules($conn, $idFiliere, $user->getId());
+    $modules = ModuleAssurer::retournerModules($conn, (int)$idFiliere, $user->getId());
 }
 
 if (isset($_POST["module"])) {
     $idModule = $_POST["module"];
     $_SESSION['module'] = $idModule;
-    $competences = Module::retournerCompetences($conn, $idModule);
+    $competences = Module::retournerCompetences($conn, (int)$idModule);
 }
 
 if (isset($_POST["competence"])) {
     $idCompetence = $_POST["competence"];
     $_SESSION['competence'] = $idCompetence;
-    $examens = Competence::returnerExamens($conn, $idCompetence);
+    $examens = Competence::returnerExamens($conn, (int)$idCompetence);
     // $competence = new Competence();
     // $competence->setId($idCompetence);
     // $examens = $competence->returner_Examens($conn);
@@ -66,7 +66,7 @@ if (isset($_POST["competence"])) {
 
 function optionSelected($choix, $currentId): string
 {
-    return (isset($_SESSION[$choix]) && $_SESSION[$choix] === $currentId) ? "selected" : "";
+    return (isset($_SESSION[$choix]) && (int)$_SESSION[$choix] === $currentId) ? "selected" : "";
 }
 
 ?>
@@ -77,54 +77,55 @@ function optionSelected($choix, $currentId): string
 
 <div class="container">
     <div class="w-50 m-auto">
-        <div class="mt-1">
-            <form method="post">
+        <a href="../router/logoutRouter.php"> Deconnecter </a>
+        <form method="post">
+            <div class="mt-1">
                 <div>
                     <label for="">filiere</label>
                     <select required class="form-select" name="filiere" onchange="submit()" id="selectFiliere">
                         <!-- <option value="" hidden></option> -->
                         <?php foreach ($filieres as $filiere) : ?>
+                            <option value="" hidden>Choisi la filiere</option>
                             <option <?= optionSelected('filiere', $filiere->getId()) ?>
-                                    value="<?= $filiere->getId(); ?>"><?= $filiere->getLibFiliere(); ?></option>
+                                    value="<?= $filiere->getId() ?>"><?= $filiere->getLibFiliere() ?></option>
                         <?php endforeach;
                         unset($filieres, $filiere);
                         ?>
                     </select>
                 </div>
                 <input type="hidden" name="s_filiere" value="filiere">
-        </div>
+            </div>
 
-        <div class="mt-1">
-            <label for="">module</label>
-            <select class="form-select" name="module" id="" onchange="submit()">
-                <?php if (isset($idFiliere)) : ?>
-                    <?php foreach ($modules as $module) : ?>
-                        <option <?= optionSelected('module', $module->getId()) ?>
-                                value="<?= $module->getId() ?>"><?= $module->getLibModule(); ?></option>
-                    <?php endforeach;
-                    unset($modules, $module);
-                    ?>
-                <?php endif; ?>
-            </select>
-        </div>
+            <div class="mt-1">
+                <label for="">module</label>
+                <select class="form-select" name="module" id="" onchange="submit()">
+                    <option value="" hidden>Choisi le module</option>
+                    <?php if (isset($idFiliere)) : ?>
+                        <?php foreach ($modules as $module) : ?>
+                            <option <?= optionSelected('module', $module->getId()) ?>
+                                    value="<?= $module->getId() ?>"><?= $module->getLibModule() ?></option>
+                        <?php endforeach;
+                        unset($modules, $module);
+                        ?>
+                    <?php endif; ?>
+                </select>
+            </div>
 
-        <div class="mt-1">
-            <label for="">competence</label>
-            <select class="form-select" name="competence" id="" onchange="submit()">
-                <?php if (isset($idModule)) : ?>
-                    <?php foreach ($competences as $competence) : ?>
-                        <option <?= optionSelected('competence', $competence->getId()) ?>
-                                value="<?= $competence->getId() ?>"><?= $competence->getLibCompetence(); ?></option>
-                    <?php endforeach;
-                    unset($competences, $competence);
-                    ?>
-                <?php endif; ?>
-            </select>
-        </div>
+            <div class="mt-1">
+                <label for="">competence</label>
+                <select class="form-select" name="competence" id="" onchange="submit()">
+                    <option value="" selected hidden>Choisi la competence</option>
+                    <?php if (isset($idModule)) : ?>
+                        <?php foreach ($competences as $competence) : ?>
+                            <option <?= optionSelected('competence', $competence->getId()) ?>
+                                    value="<?= $competence->getId() ?>"><?= $competence->getLibCompetence() ?></option>
+                        <?php endforeach;
+                        unset($competences, $competence);
+                        ?>
+                    <?php endif; ?>
+                </select>
+            </div>
         </form>
-    </div>
-    <div>
-        <?php print_r($_SESSION); ?>
     </div>
 
     <div class="w-75 m-auto mt-4">
@@ -162,5 +163,4 @@ function optionSelected($choix, $currentId): string
             <?php endif; ?>
             </tbody>
     </div>
-    <a href="../router/logoutRouter.php"> Deconnecter </a>
 </div>

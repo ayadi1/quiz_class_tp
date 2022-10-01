@@ -76,7 +76,7 @@ class Module
         // TODO implement here
         return [];
     }
-    public static function retournerCompetences(PDO $conn,  int $idModule)
+    public static function retournerCompetences(PDO $conn,  int $idModule): bool|array
     {
         try {
             $query = "SELECT * FROM `COMPETENCE` 
@@ -91,7 +91,6 @@ class Module
 
             return $pdoS->fetchAll(PDO::FETCH_CLASS, 'Competence');
         } catch (\Throwable $th) {
-            print_r($th);
             return false;
         }
     }
