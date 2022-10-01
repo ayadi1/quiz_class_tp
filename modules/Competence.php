@@ -104,7 +104,6 @@ class Competence
 
             $pdoS->execute([
                 $this->id,
-
             ]);
 
 
@@ -118,7 +117,7 @@ class Competence
     /**
      * Get the value of libCompetence
      */ 
-    public function getLIB_COMP()
+    public function getLibCompetence()
     {
         return $this->libCompetence;
     }
@@ -128,7 +127,7 @@ class Competence
      *
      * @return  self
      */ 
-    public function setLIB_COMP($libCompetence)
+    public function setLibCompetence($libCompetence)
     {
         $this->libCompetence = $libCompetence;
 
@@ -151,7 +150,6 @@ class Competence
     public function setId($idC)
     {
         $this->id = $idC;
-
         return $this;
     }
 }

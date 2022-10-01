@@ -6,7 +6,7 @@ declare(strict_types=1);
 class Formateur
 {
 
-    /** @var int id    private int $id;
+    /** @var int id*/   
     private int $id;
 
     /** @var string */
@@ -109,7 +109,7 @@ class Formateur
                 if ($formateur_row->password == $password) {
                     return new self(
                         $formateur_row->id,
-                        $formateur_row->NOM,
+                        $formateur_row->nom,
                         $formateur_row->email,
                         $formateur_row->password
                     );

@@ -21,8 +21,7 @@ class LoginController
         }
         // header("location:MenuPrincipale.php");
         //print_r("Welcome Formateur ,".$user->getNom());
-        if ($user != false) {
-            //if($user){
+        if ($user != false) {       
             $_SESSION['user'] = serialize($user);
             header("location:../menu/index.php");
         } else{
