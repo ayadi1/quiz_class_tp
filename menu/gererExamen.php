@@ -147,7 +147,7 @@ function optionSelected($choix, $currentId): string
                             <input hidden type="text" value="<?= $examen->getId() ?>" name="id">
                             <td><?= $examen->getId() ?></td>
                             <td>
-                                <input type="text" name="label" value="<?= $examen->getLabel() ?>">
+                                <input type="text" name="label" value="<?= $examen->getLibExamen() ?>">
                             </td>
                             <td><?= $examen->getDateCreation() ?></td>
                             <td><input name="datePassation" type="date" value="<?= $examen->getDatePassation() ?>"></td>

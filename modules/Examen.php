@@ -13,7 +13,7 @@ class Examen
     private int $idCompetence;
 
     /** @var string */
-    private string $label;
+    private string $libExamen;
 
     /** @var date */
     private  $dateCreation;
@@ -35,12 +35,12 @@ class Examen
     {
         try {
             $query = "UPDATE `EXAMEN` 
-                        SET `label`=?,
+                        SET `libExamen`=?,
                         `datePassation`=? 
                         WHERE `id` = ?";
             $pdoS = $conn->prepare($query);
             $pdoS->execute([
-                $this->label,
+                $this->libExamen,
                 $this->datePassation,
                 $this->id,
             ]);
@@ -56,7 +56,7 @@ class Examen
     public function update(PDO $conn , string $label, $datePassation)
     {
         try {
-            $this->setLabel($label);
+            $this->setLibExamen($label);
             $this->setDatePassation($datePassation);
             return $this->save($conn);
         } catch (\Throwable $th) {
@@ -135,9 +135,9 @@ class Examen
     /**
      * Get the value of label
      */
-    public function getLabel()
+    public function getLibExamen()
     {
-        return $this->label;
+        return $this->libExamen;
     }
 
     /**
@@ -145,9 +145,9 @@ class Examen
      *
      * @return  self
      */
-    public function setLabel($label)
+    public function setLibExamen($libExamen)
     {
-        $this->label = $label;
+        $this->libExamen = $libExamen;
 
         return $this;
     }
