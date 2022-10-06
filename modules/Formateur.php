@@ -97,15 +97,11 @@ class Formateur
         try {
             $query = "SELECT * FROM `formateur` WHERE `email` = ? ";
             $pdoS = $conn->prepare($query);
-
             $pdoS->execute([
                 $email
             ]);
-
-
             if ($pdoS->rowCount() > 0) {
                 $formateur_row = $pdoS->fetch();
-
                 if ($formateur_row->password === $password) {
                     return new self(
                         $formateur_row->id,
@@ -120,6 +116,7 @@ class Formateur
             return false;
         }
     }
+
     public function retournerFilieres(PDO $conn): bool|array
     {
         try {

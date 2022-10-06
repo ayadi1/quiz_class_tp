@@ -7,7 +7,7 @@ class Stagiaire
 {
 
     /** @var int */
-    private int $CEF;
+    private int $id;
 
     /** @var string */
     private string $nom;
@@ -21,14 +21,13 @@ class Stagiaire
     /**
      * Default constructor
      */
-    public function __construct(int $CEF, string $nom, string $email, string $password)
+    public function __construct(int $id, string $nom, string $email, string $password)
     {
-        $this->CEF = $CEF;
+        $this->id = $id;
         $this->nom = $nom;
         $this->email = $email;
         $this->password = $password;
     }
-
 
 
     /**
@@ -68,14 +67,14 @@ class Stagiaire
     }
 
     /**
-     * @param int $CEF 
+     * @param int $id
      * @return [object Object]
      */
-    public static function findByCEF(int $CEF)
+    public static function findById(int $id)
     {
         // TODO implement here
 
-        return $CEF;
+        return $id;
     }
 
     /**
@@ -95,21 +94,26 @@ class Stagiaire
         // TODO implement here
         return null;
     }
+
     // login
 
-    public static function login(PDO $conn, string $email, string $password): Stagiaire | bool
+    public static function login(PDO $conn, string $email, string $password): Stagiaire|bool
     {
         try {
-            $query = "SELECT * FROM `STAGIAIRE` WHERE `email` = ? ";
+            $query = "SELECT * FROM `stagiaire` WHERE `email` = ? ";
             $pdoS = $conn->prepare($query);
             $pdoS->execute([
                 $email
             ]);
             if ($pdoS->rowCount() > 0) {
                 $staigaire_row = $pdoS->fetch();
-                
                 if ($staigaire_row->password === $password) {
-                    return new self($staigaire_row->CEF, $staigaire_row->nom, $staigaire_row->email, $staigaire_row->password);
+                    return new self(
+                        $staigaire_row->id,
+                        $staigaire_row->nom,
+                        $staigaire_row->email,
+                        $staigaire_row->password
+                    );
                 }
             }
 

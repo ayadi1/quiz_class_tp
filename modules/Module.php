@@ -76,7 +76,7 @@ class Module
         // TODO implement here
         return [];
     }
-    
+
     public static function retournerCompetences(PDO $conn,  int $idModule): bool|array
     {
         try {
