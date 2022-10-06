@@ -23,7 +23,7 @@ class Module
     }
 
     /**
-     * @return [object Object]
+     * @return
      */
     public function save()
     {
@@ -32,7 +32,7 @@ class Module
     }
 
     /**
-     * @return [object Object]
+     * @return
      */
     public function update()
     {
@@ -60,7 +60,7 @@ class Module
 
     /**
      * @param  $id 
-     * @return [object Object]
+     * @return
      */
     public function findById($id)
     {
@@ -76,6 +76,7 @@ class Module
         // TODO implement here
         return [];
     }
+    
     public static function retournerCompetences(PDO $conn,  int $idModule): bool|array
     {
         try {

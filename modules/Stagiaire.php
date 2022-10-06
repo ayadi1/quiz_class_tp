@@ -108,7 +108,7 @@ class Stagiaire
             if ($pdoS->rowCount() > 0) {
                 $staigaire_row = $pdoS->fetch();
                 
-                if ($staigaire_row->password == $password) {
+                if ($staigaire_row->password === $password) {
                     return new self($staigaire_row->CEF, $staigaire_row->nom, $staigaire_row->email, $staigaire_row->password);
                 }
             }
