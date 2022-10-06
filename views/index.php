@@ -14,13 +14,13 @@ $type = null;
 if ($user instanceof  Formateur) {
     $type = 'formateur';
 } elseif ($user instanceof  Stagiaire) {
-    $type = 'stagaire';
+    $type = 'stagiaire';
 }
 $_SESSION['user'] = serialize($user);
 
 ?>
 
-<?php if ($type = 'formateur') : ?>
+<?php if ($type === 'formateur') : ?>
     <nav>
         <ul>
             <li>
@@ -28,7 +28,7 @@ $_SESSION['user'] = serialize($user);
             </li>
         </ul>
     </nav>
-<?php elseif ($type = 'stagiaire') : ?>
+<?php elseif ($type === 'stagiaire') : ?>
     <nav>
         <ul>
             <li><a href="./passerExamen.php">passer Examen</a></li>
