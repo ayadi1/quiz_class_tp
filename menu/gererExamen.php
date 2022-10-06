@@ -14,7 +14,7 @@ if (!isset($_SESSION["user"])) {
     header("Location: ../login.php");
 }
 
-$user = unserialize($_SESSION['user']);
+$user = unserialize($_SESSION['user'], ["allowed_classes" => true]);
 $filieres = [];
 $modules = [];
 $competences = [];
