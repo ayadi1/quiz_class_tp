@@ -1,6 +1,10 @@
 <?php
 session_start();
 
+if (!isset($_SESSION["user"])) {
+    header("Location: ../login.php");
+}
+
 require_once "../modules/Formateur.php";
 require_once "../modules/Stagiaire.php";
 require_once "../modules/Filiere.php";
@@ -10,9 +14,6 @@ require_once "../modules/Competence.php";
 require_once "../modules/Examen.php";
 require_once '../Connection.php';
 
-if (!isset($_SESSION["user"])) {
-    header("Location: ../login.php");
-}
 
 $user = unserialize($_SESSION['user'], ["allowed_classes" => true]);
 $filieres = [];

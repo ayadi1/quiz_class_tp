@@ -80,16 +80,9 @@ class Module
     public static function retournerCompetences(PDO $conn,  int $idModule): bool|array
     {
         try {
-            $query = "SELECT * FROM `COMPETENCE` 
-            WHERE `idModule` = ? ";
+            $query = "SELECT * FROM `COMPETENCE` WHERE `idModule` = ? ";
             $pdoS = $conn->prepare($query);
-
-            $pdoS->execute([
-                $idModule,
-
-            ]);
-
-
+            $pdoS->execute([$idModule]);
             return $pdoS->fetchAll(PDO::FETCH_CLASS, 'Competence');
         } catch (\Throwable $th) {
             return false;

@@ -80,36 +80,11 @@ class Competence
     public static function returnerExamens(PDO $conn, int $idCompetence)
     {
         try {
-            $query = "SELECT * FROM `EXAMEN` 
-            WHERE  `idCompetence` = ?";
+            $query = "SELECT * FROM `EXAMEN` WHERE  `idCompetence` = ?";
             $pdoS = $conn->prepare($query);
-
-            $pdoS->execute([
-                $idCompetence,  
-            ]);
-
-
+            $pdoS->execute([$idCompetence]);
             return $pdoS->fetchAll(PDO::FETCH_CLASS, 'Examen');
         } catch (\Throwable $th) {
-            print_r($th);
-            return false;
-        }
-    }
-    public  function returner_Examens(PDO $conn)
-    {
-        try {
-            $query = "SELECT * FROM `EXAMEN` 
-            WHERE  `idCompetence` = ?";
-            $pdoS = $conn->prepare($query);
-
-            $pdoS->execute([
-                $this->id,
-            ]);
-
-
-            return $pdoS->fetchAll(PDO::FETCH_CLASS, 'Module');
-        } catch (\Throwable $th) {
-            print_r($th);
             return false;
         }
     }

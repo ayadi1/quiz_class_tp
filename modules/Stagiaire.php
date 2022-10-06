@@ -102,9 +102,7 @@ class Stagiaire
         try {
             $query = "SELECT * FROM `stagiaire` WHERE `email` = ? ";
             $pdoS = $conn->prepare($query);
-            $pdoS->execute([
-                $email
-            ]);
+            $pdoS->execute([$email]);
             if ($pdoS->rowCount() > 0) {
                 $staigaire_row = $pdoS->fetch();
                 if ($staigaire_row->password === $password) {
