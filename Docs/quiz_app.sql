@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : jeu. 13 oct. 2022 à 04:08
+-- Généré le : jeu. 13 oct. 2022 à 04:58
 -- Version du serveur : 10.4.24-MariaDB
 -- Version de PHP : 8.1.6
 
@@ -44,6 +44,17 @@ CREATE TABLE `competence` (
   `lib` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Déchargement des données de la table `competence`
+--
+
+INSERT INTO `competence` (`id`, `idModule`, `lib`) VALUES
+(1, 1, 'comp 1'),
+(2, 1, 'comp 2'),
+(3, 2, 'comp1'),
+(4, 2, 'comp 2'),
+(5, 2, 'comp3');
+
 -- --------------------------------------------------------
 
 --
@@ -83,6 +94,14 @@ CREATE TABLE `examen` (
   `dateCreation` date DEFAULT NULL,
   `datePassation` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `examen`
+--
+
+INSERT INTO `examen` (`id`, `idCompetence`, `lib`, `dateCreation`, `datePassation`) VALUES
+(1, 1, 'examen 1', '2022-10-13', '2022-10-17'),
+(2, 2, 'examen 1', '2022-10-14', '2022-10-21');
 
 -- --------------------------------------------------------
 
@@ -137,6 +156,14 @@ CREATE TABLE `formateur_filiere` (
   `idFormateur` int(11) NOT NULL,
   `idFiliere` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `formateur_filiere`
+--
+
+INSERT INTO `formateur_filiere` (`idFormateur`, `idFiliere`) VALUES
+(2, 1),
+(2, 2);
 
 -- --------------------------------------------------------
 
@@ -195,6 +222,14 @@ CREATE TABLE `module_assurer` (
   `idModule` int(11) NOT NULL,
   `idGroup` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `module_assurer`
+--
+
+INSERT INTO `module_assurer` (`idFormateur`, `idModule`, `idGroup`) VALUES
+(2, 1, 3),
+(2, 2, 3);
 
 -- --------------------------------------------------------
 
@@ -378,7 +413,7 @@ ALTER TABLE `evaluation`
 -- AUTO_INCREMENT pour la table `examen`
 --
 ALTER TABLE `examen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `groupe`
