@@ -1,298 +1,495 @@
--- MySQL Workbench Forward Engineering
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Hôte : 127.0.0.1
+-- Généré le : jeu. 13 oct. 2022 à 04:08
+-- Version du serveur : 10.4.24-MariaDB
+-- Version de PHP : 8.1.6
 
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-
--- -----------------------------------------------------
--- Schema quiz_app
--- -----------------------------------------------------
-
--- -----------------------------------------------------
--- Schema quiz_app
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `quiz_app` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `quiz_app` ;
-
--- -----------------------------------------------------
--- Table `quiz_app`.`reponse`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `quiz_app`.`reponse` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `lib` TEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
 
--- -----------------------------------------------------
--- Table `quiz_app`.`filiere`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `quiz_app`.`filiere` (
-  `id` INT NOT NULL,
-  `lib` VARCHAR(255) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
+--
+-- Base de données : `quiz_app`
+--
 
--- -----------------------------------------------------
--- Table `quiz_app`.`module`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `quiz_app`.`module` (
-  `id` INT NOT NULL,
-  `lib` VARCHAR(255) NULL DEFAULT NULL,
-  `idFiliere` INT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `MODULE_ibfk_1`
-    FOREIGN KEY (`idFiliere`)
-    REFERENCES `quiz_app`.`filiere` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+-- --------------------------------------------------------
 
+--
+-- Structure de la table `avoir_reponse`
+--
 
--- -----------------------------------------------------
--- Table `quiz_app`.`competence`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `quiz_app`.`competence` (
-  `id` INT NOT NULL,
-  `idModule` INT NOT NULL,
-  `lib` VARCHAR(255) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `FK_COMPOSER`
-    FOREIGN KEY (`idModule`)
-    REFERENCES `quiz_app`.`module` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+CREATE TABLE `avoir_reponse` (
+  `idReponse` int(11) NOT NULL,
+  `idQuestion` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
 
--- -----------------------------------------------------
--- Table `quiz_app`.`question`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `quiz_app`.`question` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `idReponse` INT NULL DEFAULT NULL,
-  `lib` TEXT NULL DEFAULT NULL,
-  `idCompetence` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `FK_AVOIR_RC`
-    FOREIGN KEY (`idReponse`)
-    REFERENCES `quiz_app`.`reponse` (`id`),
-  CONSTRAINT `fk_question_competence1`
-    FOREIGN KEY (`idCompetence`)
-    REFERENCES `quiz_app`.`competence` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+--
+-- Structure de la table `competence`
+--
 
+CREATE TABLE `competence` (
+  `id` int(11) NOT NULL,
+  `idModule` int(11) NOT NULL,
+  `lib` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- -----------------------------------------------------
--- Table `quiz_app`.`avoir_reponse`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `quiz_app`.`avoir_reponse` (
-  `idReponse` INT NOT NULL,
-  `idQuestion` INT NOT NULL,
-  PRIMARY KEY (`idReponse`, `idQuestion`),
-  CONSTRAINT `FK_AVOIR_R`
-    FOREIGN KEY (`idQuestion`)
-    REFERENCES `quiz_app`.`question` (`id`),
-  CONSTRAINT `FK_AVOIR_R2`
-    FOREIGN KEY (`idReponse`)
-    REFERENCES `quiz_app`.`reponse` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+-- --------------------------------------------------------
 
+--
+-- Structure de la table `etre_choisi`
+--
 
--- -----------------------------------------------------
--- Table `quiz_app`.`groupe`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `quiz_app`.`groupe` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `idFiliere` INT NOT NULL,
-  `lib` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `FK_INCLURE`
-    FOREIGN KEY (`idFiliere`)
-    REFERENCES `quiz_app`.`filiere` (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 5
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+CREATE TABLE `etre_choisi` (
+  `idEvaluation` int(11) NOT NULL,
+  `idQuestion` int(11) NOT NULL,
+  `idReponse` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
 
--- -----------------------------------------------------
--- Table `quiz_app`.`stagiaire`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `quiz_app`.`stagiaire` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `nom` VARCHAR(255) NOT NULL,
-  `prenom` VARCHAR(255) NOT NULL,
-  `email` VARCHAR(255) NOT NULL,
-  `password` VARCHAR(255) NOT NULL,
-  `idGroupe` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `fk_stagiaire_groupe1`
-    FOREIGN KEY (`idGroupe`)
-    REFERENCES `quiz_app`.`groupe` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-AUTO_INCREMENT = 3
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+--
+-- Structure de la table `evaluation`
+--
 
+CREATE TABLE `evaluation` (
+  `id` int(11) NOT NULL,
+  `date` date DEFAULT NULL,
+  `score` int(11) DEFAULT NULL,
+  `idStagiaire` int(11) NOT NULL,
+  `idExamen` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- -----------------------------------------------------
--- Table `quiz_app`.`examen`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `quiz_app`.`examen` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `idCompetence` INT NOT NULL,
-  `lib` VARCHAR(255) NULL DEFAULT NULL,
-  `dateCreation` DATE NULL DEFAULT NULL,
-  `datePassation` DATE NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `FK_CONCERNER`
-    FOREIGN KEY (`idCompetence`)
-    REFERENCES `quiz_app`.`competence` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+-- --------------------------------------------------------
 
+--
+-- Structure de la table `examen`
+--
 
--- -----------------------------------------------------
--- Table `quiz_app`.`evaluation`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `quiz_app`.`evaluation` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `date` DATE NULL DEFAULT NULL,
-  `score` INT NULL DEFAULT NULL,
-  `idStagiaire` INT NOT NULL,
-  `idExamen` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `fk_evaluation_stagiaire1`
-    FOREIGN KEY (`idStagiaire`)
-    REFERENCES `quiz_app`.`stagiaire` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_evaluation_examen1`
-    FOREIGN KEY (`idExamen`)
-    REFERENCES `quiz_app`.`examen` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+CREATE TABLE `examen` (
+  `id` int(11) NOT NULL,
+  `idCompetence` int(11) NOT NULL,
+  `lib` varchar(255) DEFAULT NULL,
+  `dateCreation` date DEFAULT NULL,
+  `datePassation` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
 
--- -----------------------------------------------------
--- Table `quiz_app`.`formateur`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `quiz_app`.`formateur` (
-  `id` INT NOT NULL,
-  `nom` VARCHAR(255) NULL DEFAULT NULL,
-  `prenom` VARCHAR(255) NULL DEFAULT NULL,
-  `email` VARCHAR(255) NOT NULL,
-  `password` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+--
+-- Structure de la table `filiere`
+--
 
+CREATE TABLE `filiere` (
+  `id` int(11) NOT NULL,
+  `lib` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- -----------------------------------------------------
--- Table `quiz_app`.`formateur_filiere`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `quiz_app`.`formateur_filiere` (
-  `idFormateur` INT NOT NULL,
-  `idFiliere` INT NOT NULL,
-  PRIMARY KEY (`idFormateur`, `idFiliere`),
-  CONSTRAINT `FORMATEUR_FILIERE_ibfk_1`
-    FOREIGN KEY (`idFiliere`)
-    REFERENCES `quiz_app`.`filiere` (`id`),
-  CONSTRAINT `FORMATEUR_FILIERE_ibfk_2`
-    FOREIGN KEY (`idFormateur`)
-    REFERENCES `quiz_app`.`formateur` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+--
+-- Déchargement des données de la table `filiere`
+--
 
+INSERT INTO `filiere` (`id`, `lib`) VALUES
+(1, 'dev. dig.'),
+(2, 'E.S.A'),
+(3, 'G.E'),
+(4, 'E.I');
 
--- -----------------------------------------------------
--- Table `quiz_app`.`module_assurer`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `quiz_app`.`module_assurer` (
-  `idFormateur` INT NOT NULL,
-  `idModule` INT NOT NULL,
-  `idGroup` INT NOT NULL,
-  PRIMARY KEY (`idModule`, `idGroup`),
-  CONSTRAINT `ModuleAssurer_ibfk_1`
-    FOREIGN KEY (`idFormateur`)
-    REFERENCES `quiz_app`.`formateur` (`id`),
-  CONSTRAINT `ModuleAssurer_ibfk_2`
-    FOREIGN KEY (`idGroup`)
-    REFERENCES `quiz_app`.`groupe` (`id`),
-  CONSTRAINT `ModuleAssurer_ibfk_3`
-    FOREIGN KEY (`idModule`)
-    REFERENCES `quiz_app`.`module` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+-- --------------------------------------------------------
 
+--
+-- Structure de la table `formateur`
+--
 
--- -----------------------------------------------------
--- Table `quiz_app`.`pour`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `quiz_app`.`pour` (
-  `idEvaluation` INT NOT NULL,
-  `idQuestion` INT NOT NULL,
-  PRIMARY KEY (`idEvaluation`, `idQuestion`),
-  CONSTRAINT `FK_POUR`
-    FOREIGN KEY (`idQuestion`)
-    REFERENCES `quiz_app`.`question` (`id`),
-  CONSTRAINT `FK_POUR2`
-    FOREIGN KEY (`idEvaluation`)
-    REFERENCES `quiz_app`.`examen` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+CREATE TABLE `formateur` (
+  `id` int(11) NOT NULL,
+  `nom` varchar(255) DEFAULT NULL,
+  `prenom` varchar(255) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Déchargement des données de la table `formateur`
+--
 
--- -----------------------------------------------------
--- Table `quiz_app`.`etre_choisi`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `quiz_app`.`etre_choisi` (
-  `idEvaluation` INT NOT NULL,
-  `idQuestion` INT NOT NULL,
-  `idReponse` INT NOT NULL,
-  PRIMARY KEY (`idEvaluation`, `idQuestion`),
-  CONSTRAINT `fk_proposer_evaluation1`
-    FOREIGN KEY (`idEvaluation`)
-    REFERENCES `quiz_app`.`evaluation` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_proposer_question1`
-    FOREIGN KEY (`idQuestion`)
-    REFERENCES `quiz_app`.`question` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_proposer_reponse1`
-    FOREIGN KEY (`idReponse`)
-    REFERENCES `quiz_app`.`reponse` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+INSERT INTO `formateur` (`id`, `nom`, `prenom`, `email`, `password`) VALUES
+(1, 'ermich', 'reda', 'reda.ermich', 'reda'),
+(2, 'ayadi', 'oussama', 'ayadi.oussama', 'ayadi');
 
+-- --------------------------------------------------------
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+--
+-- Structure de la table `formateur_filiere`
+--
+
+CREATE TABLE `formateur_filiere` (
+  `idFormateur` int(11) NOT NULL,
+  `idFiliere` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `groupe`
+--
+
+CREATE TABLE `groupe` (
+  `id` int(11) NOT NULL,
+  `idFiliere` int(11) NOT NULL,
+  `lib` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `groupe`
+--
+
+INSERT INTO `groupe` (`id`, `idFiliere`, `lib`) VALUES
+(1, 1, 'dev101'),
+(2, 1, 'dev102'),
+(3, 1, 'dev201'),
+(4, 1, 'dev202');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `module`
+--
+
+CREATE TABLE `module` (
+  `id` int(11) NOT NULL,
+  `lib` varchar(255) DEFAULT NULL,
+  `idFiliere` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `module`
+--
+
+INSERT INTO `module` (`id`, `lib`, `idFiliere`) VALUES
+(1, 'Approche Agile', 1),
+(2, 'Back End', 1),
+(3, 'Front End', 1),
+(4, 'Gere DonneeS', 1),
+(5, 'Python', 1),
+(6, 'Algorithm', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `module_assurer`
+--
+
+CREATE TABLE `module_assurer` (
+  `idFormateur` int(11) NOT NULL,
+  `idModule` int(11) NOT NULL,
+  `idGroup` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pour`
+--
+
+CREATE TABLE `pour` (
+  `idExamen` int(11) NOT NULL,
+  `idQuestion` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `question`
+--
+
+CREATE TABLE `question` (
+  `id` int(11) NOT NULL,
+  `idReponse` int(11) DEFAULT NULL,
+  `lib` text DEFAULT NULL,
+  `idCompetence` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `reponse`
+--
+
+CREATE TABLE `reponse` (
+  `id` int(11) NOT NULL,
+  `lib` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `stagiaire`
+--
+
+CREATE TABLE `stagiaire` (
+  `id` int(11) NOT NULL,
+  `nom` varchar(255) NOT NULL,
+  `prenom` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `idGroupe` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `stagiaire`
+--
+
+INSERT INTO `stagiaire` (`id`, `nom`, `prenom`, `email`, `password`, `idGroupe`) VALUES
+(1, 'ermich', 'reda', 'ermich.reda', 'reda', 3),
+(2, 'ayadi', 'oussama', 'oussama.ayadi', 'ayadi', 3);
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `avoir_reponse`
+--
+ALTER TABLE `avoir_reponse`
+  ADD PRIMARY KEY (`idReponse`,`idQuestion`),
+  ADD KEY `FK_AVOIR_R` (`idQuestion`);
+
+--
+-- Index pour la table `competence`
+--
+ALTER TABLE `competence`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_COMPOSER` (`idModule`);
+
+--
+-- Index pour la table `etre_choisi`
+--
+ALTER TABLE `etre_choisi`
+  ADD PRIMARY KEY (`idEvaluation`,`idQuestion`),
+  ADD KEY `fk_proposer_question1` (`idQuestion`),
+  ADD KEY `fk_proposer_reponse1` (`idReponse`);
+
+--
+-- Index pour la table `evaluation`
+--
+ALTER TABLE `evaluation`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_evaluation_stagiaire1` (`idStagiaire`),
+  ADD KEY `fk_evaluation_examen1` (`idExamen`);
+
+--
+-- Index pour la table `examen`
+--
+ALTER TABLE `examen`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_CONCERNER` (`idCompetence`);
+
+--
+-- Index pour la table `filiere`
+--
+ALTER TABLE `filiere`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `formateur`
+--
+ALTER TABLE `formateur`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `formateur_filiere`
+--
+ALTER TABLE `formateur_filiere`
+  ADD PRIMARY KEY (`idFormateur`,`idFiliere`),
+  ADD KEY `FORMATEUR_FILIERE_ibfk_1` (`idFiliere`);
+
+--
+-- Index pour la table `groupe`
+--
+ALTER TABLE `groupe`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_INCLURE` (`idFiliere`);
+
+--
+-- Index pour la table `module`
+--
+ALTER TABLE `module`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `MODULE_ibfk_1` (`idFiliere`);
+
+--
+-- Index pour la table `module_assurer`
+--
+ALTER TABLE `module_assurer`
+  ADD PRIMARY KEY (`idModule`,`idGroup`),
+  ADD KEY `ModuleAssurer_ibfk_1` (`idFormateur`),
+  ADD KEY `ModuleAssurer_ibfk_2` (`idGroup`);
+
+--
+-- Index pour la table `pour`
+--
+ALTER TABLE `pour`
+  ADD PRIMARY KEY (`idExamen`,`idQuestion`),
+  ADD KEY `FK_POUR` (`idQuestion`);
+
+--
+-- Index pour la table `question`
+--
+ALTER TABLE `question`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_avoir_rc` (`idReponse`),
+  ADD KEY `fk_question_competence1` (`idCompetence`);
+
+--
+-- Index pour la table `reponse`
+--
+ALTER TABLE `reponse`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `stagiaire`
+--
+ALTER TABLE `stagiaire`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_stagiaire_groupe1` (`idGroupe`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `evaluation`
+--
+ALTER TABLE `evaluation`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `examen`
+--
+ALTER TABLE `examen`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `groupe`
+--
+ALTER TABLE `groupe`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT pour la table `question`
+--
+ALTER TABLE `question`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `reponse`
+--
+ALTER TABLE `reponse`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `stagiaire`
+--
+ALTER TABLE `stagiaire`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `avoir_reponse`
+--
+ALTER TABLE `avoir_reponse`
+  ADD CONSTRAINT `FK_AVOIR_R` FOREIGN KEY (`idQuestion`) REFERENCES `question` (`id`),
+  ADD CONSTRAINT `FK_AVOIR_R2` FOREIGN KEY (`idReponse`) REFERENCES `reponse` (`id`);
+
+--
+-- Contraintes pour la table `competence`
+--
+ALTER TABLE `competence`
+  ADD CONSTRAINT `FK_COMPOSER` FOREIGN KEY (`idModule`) REFERENCES `module` (`id`);
+
+--
+-- Contraintes pour la table `etre_choisi`
+--
+ALTER TABLE `etre_choisi`
+  ADD CONSTRAINT `fk_proposer_evaluation1` FOREIGN KEY (`idEvaluation`) REFERENCES `evaluation` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_proposer_question1` FOREIGN KEY (`idQuestion`) REFERENCES `question` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_proposer_reponse1` FOREIGN KEY (`idReponse`) REFERENCES `reponse` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `evaluation`
+--
+ALTER TABLE `evaluation`
+  ADD CONSTRAINT `fk_evaluation_examen1` FOREIGN KEY (`idExamen`) REFERENCES `examen` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_evaluation_stagiaire1` FOREIGN KEY (`idStagiaire`) REFERENCES `stagiaire` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `examen`
+--
+ALTER TABLE `examen`
+  ADD CONSTRAINT `FK_CONCERNER` FOREIGN KEY (`idCompetence`) REFERENCES `competence` (`id`);
+
+--
+-- Contraintes pour la table `formateur_filiere`
+--
+ALTER TABLE `formateur_filiere`
+  ADD CONSTRAINT `FORMATEUR_FILIERE_ibfk_1` FOREIGN KEY (`idFiliere`) REFERENCES `filiere` (`id`),
+  ADD CONSTRAINT `FORMATEUR_FILIERE_ibfk_2` FOREIGN KEY (`idFormateur`) REFERENCES `formateur` (`id`);
+
+--
+-- Contraintes pour la table `groupe`
+--
+ALTER TABLE `groupe`
+  ADD CONSTRAINT `FK_INCLURE` FOREIGN KEY (`idFiliere`) REFERENCES `filiere` (`id`);
+
+--
+-- Contraintes pour la table `module`
+--
+ALTER TABLE `module`
+  ADD CONSTRAINT `MODULE_ibfk_1` FOREIGN KEY (`idFiliere`) REFERENCES `filiere` (`id`);
+
+--
+-- Contraintes pour la table `module_assurer`
+--
+ALTER TABLE `module_assurer`
+  ADD CONSTRAINT `ModuleAssurer_ibfk_1` FOREIGN KEY (`idFormateur`) REFERENCES `formateur` (`id`),
+  ADD CONSTRAINT `ModuleAssurer_ibfk_2` FOREIGN KEY (`idGroup`) REFERENCES `groupe` (`id`),
+  ADD CONSTRAINT `ModuleAssurer_ibfk_3` FOREIGN KEY (`idModule`) REFERENCES `module` (`id`);
+
+--
+-- Contraintes pour la table `pour`
+--
+ALTER TABLE `pour`
+  ADD CONSTRAINT `FK_POUR` FOREIGN KEY (`idQuestion`) REFERENCES `question` (`id`),
+  ADD CONSTRAINT `FK_POUR2` FOREIGN KEY (`idExamen`) REFERENCES `examen` (`id`);
+
+--
+-- Contraintes pour la table `question`
+--
+ALTER TABLE `question`
+  ADD CONSTRAINT `fk_avoir_rc` FOREIGN KEY (`idReponse`) REFERENCES `reponse` (`id`),
+  ADD CONSTRAINT `fk_question_competence1` FOREIGN KEY (`idCompetence`) REFERENCES `competence` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `stagiaire`
+--
+ALTER TABLE `stagiaire`
+  ADD CONSTRAINT `fk_stagiaire_groupe1` FOREIGN KEY (`idGroupe`) REFERENCES `groupe` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
