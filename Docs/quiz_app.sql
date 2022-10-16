@@ -2,10 +2,10 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Hôte : localhost
--- Généré le : ven. 30 sep. 2022 à 19:17
--- Version du serveur : 10.4.24-MariaDB
--- Version de PHP : 8.1.6
+-- Host: localhost
+-- Generation Time: Oct 16, 2022 at 02:19 PM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,28 +18,16 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `quiz_app`
+-- Database: `quiz_app`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `ASSURER`
+-- Table structure for table `avoir_reponse`
 --
 
-CREATE TABLE `ASSURER` (
-  `idFormateur` int(11) NOT NULL,
-  `idModule` int(11) NOT NULL,
-  `idGroupe` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `AVOIR_R`
---
-
-CREATE TABLE `AVOIR_R` (
+CREATE TABLE `avoir_reponse` (
   `idReponse` int(11) NOT NULL,
   `idQuestion` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -47,469 +35,506 @@ CREATE TABLE `AVOIR_R` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `COMPETENCE`
+-- Table structure for table `competence`
 --
 
-CREATE TABLE `COMPETENCE` (
+CREATE TABLE `competence` (
   `id` int(11) NOT NULL,
   `idModule` int(11) NOT NULL,
-  `libCompetence` char(20) DEFAULT NULL
+  `lib` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `COMPETENCE`
+-- Dumping data for table `competence`
 --
 
-INSERT INTO `COMPETENCE` (`id`, `idModule`, `libCompetence`) VALUES
-(1, 1, 'comp1'),
-(2, 2, 'comp2'),
-(3, 2, 'comp3'),
-(4, 2, 'comp4'),
-(5, 3, 'comp5'),
-(6, 3, 'comp6'),
-(7, 2, 'comp7'),
-(8, 2, 'comp8');
+INSERT INTO `competence` (`id`, `idModule`, `lib`) VALUES
+(1, 1, 'comp 1'),
+(2, 1, 'comp 2'),
+(3, 2, 'comp1'),
+(4, 2, 'comp 2'),
+(5, 2, 'comp3');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `ETRE_SELECTIONNER`
+-- Table structure for table `etre_choisi`
 --
 
-CREATE TABLE `ETRE_SELECTIONNER` (
+CREATE TABLE `etre_choisi` (
   `idEvaluation` int(11) NOT NULL,
-  `idReponse` int(11) NOT NULL,
-  `idQuestion` int(11) NOT NULL
+  `idQuestion` int(11) NOT NULL,
+  `idReponse` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `EVALUATION`
+-- Table structure for table `evaluation`
 --
 
-CREATE TABLE `EVALUATION` (
+CREATE TABLE `evaluation` (
   `id` int(11) NOT NULL,
-  `idEvaluation` int(11) NOT NULL,
-  `idStagiaire` int(11) NOT NULL,
   `date` date DEFAULT NULL,
-  `score` int(11) DEFAULT NULL
+  `score` int(11) DEFAULT NULL,
+  `idStagiaire` int(11) NOT NULL,
+  `idExamen` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `EXAMEN`
+-- Table structure for table `examen`
 --
 
-CREATE TABLE `EXAMEN` (
+CREATE TABLE `examen` (
   `id` int(11) NOT NULL,
   `idCompetence` int(11) NOT NULL,
-  `libExamen` varchar(255) DEFAULT NULL,
+  `lib` varchar(255) DEFAULT NULL,
   `dateCreation` date DEFAULT NULL,
   `datePassation` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `EXAMEN`
+-- Dumping data for table `examen`
 --
 
-INSERT INTO `EXAMEN` (`id`, `idCompetence`, `libExamen`, `dateCreation`, `datePassation`) VALUES
-(1, 1, 'C1', '2022-09-01', '2022-10-04'),
-(2, 2, 'C2', '2022-09-01', '2022-10-01'),
-(3, 1, 'C3', '2022-09-01', '2022-10-01'),
-(4, 2, 'C4', '2022-09-01', '2022-10-01'),
-(5, 3, 'C5 ', '2022-09-01', '2022-10-01'),
-(6, 3, 'C6', '2022-09-01', '2022-10-01'),
-(7, 5, 'C7', '2022-09-01', '2022-10-01');
+INSERT INTO `examen` (`id`, `idCompetence`, `lib`, `dateCreation`, `datePassation`) VALUES
+(1, 1, 'examen 1', '2022-10-13', '2022-10-17'),
+(2, 2, 'examen 1', '2022-10-14', '2022-10-21');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `FILIERE`
+-- Table structure for table `filiere`
 --
 
-CREATE TABLE `FILIERE` (
+CREATE TABLE `filiere` (
   `id` int(11) NOT NULL,
-  `libFiliere` varchar(255) DEFAULT NULL
+  `lib` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `FILIERE`
+-- Dumping data for table `filiere`
 --
 
-INSERT INTO `FILIERE` (`id`, `libFiliere`) VALUES
-(1, 'DEV DEG'),
-(2, 'DEV FULL STACK');
+INSERT INTO `filiere` (`id`, `lib`) VALUES
+(1, 'dev. dig.'),
+(2, 'E.S.A'),
+(3, 'G.E'),
+(4, 'E.I');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `FORMATEUR`
+-- Table structure for table `formateur`
 --
 
-CREATE TABLE `FORMATEUR` (
+CREATE TABLE `formateur` (
   `id` int(11) NOT NULL,
-  `nom` char(20) DEFAULT NULL,
-  `prenom` char(20) DEFAULT NULL,
+  `nom` varchar(255) DEFAULT NULL,
+  `prenom` varchar(255) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `FORMATEUR`
+-- Dumping data for table `formateur`
 --
 
-INSERT INTO `FORMATEUR` (`id`, `nom`, `prenom`, `email`, `password`) VALUES
-(1, 'ayadi', 'oussama', 'ayadi.oussama', 'ayadi'),
-(2, 'maach', 'hamza', 'maach.hamza', 'maach');
+INSERT INTO `formateur` (`id`, `nom`, `prenom`, `email`, `password`) VALUES
+(2, 'ayadi', 'oussama', 'ayadi.oussama', 'ayadi');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `FORMATEUR_FILIERE`
+-- Table structure for table `formateur_filiere`
 --
 
-CREATE TABLE `FORMATEUR_FILIERE` (
+CREATE TABLE `formateur_filiere` (
   `idFormateur` int(11) NOT NULL,
   `idFiliere` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `FORMATEUR_FILIERE`
+-- Dumping data for table `formateur_filiere`
 --
 
-INSERT INTO `FORMATEUR_FILIERE` (`idFormateur`, `idFiliere`) VALUES
-(1, 1),
-(1, 2),
-(2, 1);
+INSERT INTO `formateur_filiere` (`idFormateur`, `idFiliere`) VALUES
+(2, 1),
+(2, 2);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `GROUPE`
+-- Table structure for table `groupe`
 --
 
-CREATE TABLE `GROUPE` (
+CREATE TABLE `groupe` (
   `id` int(11) NOT NULL,
   `idFiliere` int(11) NOT NULL,
-  `libGroupe` varchar(255) NOT NULL
+  `lib` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `GROUPE`
+-- Dumping data for table `groupe`
 --
 
-INSERT INTO `GROUPE` (`id`, `idFiliere`, `libGroupe`) VALUES
-(1, 1, 'DEV101'),
-(2, 1, 'DEV102'),
-(3, 1, 'DEV201'),
-(4, 1, 'DEV202');
+INSERT INTO `groupe` (`id`, `idFiliere`, `lib`) VALUES
+(1, 1, 'dev101'),
+(2, 1, 'dev102'),
+(3, 1, 'dev201'),
+(4, 1, 'dev202');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `MODULE`
+-- Table structure for table `module`
 --
 
-CREATE TABLE `MODULE` (
+CREATE TABLE `module` (
   `id` int(11) NOT NULL,
-  `libModule` char(10) DEFAULT NULL,
+  `lib` varchar(255) DEFAULT NULL,
   `idFiliere` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `MODULE`
+-- Dumping data for table `module`
 --
 
-INSERT INTO `MODULE` (`id`, `libModule`, `idFiliere`) VALUES
-(1, 'POO', 1),
-(2, 'PHP', 1),
-(3, 'javascript', 1);
+INSERT INTO `module` (`id`, `lib`, `idFiliere`) VALUES
+(1, 'Approche Agile', 1),
+(2, 'Back End', 1),
+(3, 'Front End', 1),
+(4, 'Gere DonneeS', 1),
+(5, 'Python', 1),
+(6, 'Algorithm', 1);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `ModuleAssurer`
+-- Table structure for table `module_assurer`
 --
 
-CREATE TABLE `ModuleAssurer` (
+CREATE TABLE `module_assurer` (
   `idFormateur` int(11) NOT NULL,
   `idModule` int(11) NOT NULL,
   `idGroup` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `ModuleAssurer`
+-- Dumping data for table `module_assurer`
 --
 
-INSERT INTO `ModuleAssurer` (`idFormateur`, `idModule`, `idGroup`) VALUES
-(1, 1, 1),
-(1, 2, 1),
-(1, 3, 1),
-(2, 1, 2),
-(2, 2, 2),
-(2, 3, 2);
+INSERT INTO `module_assurer` (`idFormateur`, `idModule`, `idGroup`) VALUES
+(2, 1, 3),
+(2, 2, 3);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `POUR`
+-- Table structure for table `pour`
 --
 
-CREATE TABLE `POUR` (
-  `idEvaluation` int(11) NOT NULL,
+CREATE TABLE `pour` (
+  `idExamen` int(11) NOT NULL,
   `idQuestion` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `QUESTION`
+-- Table structure for table `question`
 --
 
-CREATE TABLE `QUESTION` (
+CREATE TABLE `question` (
   `id` int(11) NOT NULL,
   `idReponse` int(11) DEFAULT NULL,
-  `libQuestion` text DEFAULT NULL
+  `lib` text DEFAULT NULL,
+  `idCompetence` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `question`
+--
+
+INSERT INTO `question` (`id`, `idReponse`, `lib`, `idCompetence`) VALUES
+(11, NULL, 'question 2', 1),
+(12, NULL, 'question 3', 1),
+(13, NULL, 'question 4', 2),
+(14, NULL, 'question 5', 3),
+(15, NULL, 'question 6', 4),
+(16, NULL, 'question 7', 5),
+(17, NULL, 'question 8', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reponse`
+--
+
+CREATE TABLE `reponse` (
+  `id` int(11) NOT NULL,
+  `lib` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `REPONSE`
+-- Table structure for table `stagiaire`
 --
 
-CREATE TABLE `REPONSE` (
+CREATE TABLE `stagiaire` (
   `id` int(11) NOT NULL,
-  `libReponse` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `STAGIAIRE`
---
-
-CREATE TABLE `STAGIAIRE` (
-  `id` int(11) NOT NULL,
-  `idGroupe` int(11) NOT NULL,
   `nom` varchar(255) NOT NULL,
+  `prenom` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `idGroupe` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `STAGIAIRE`
+-- Dumping data for table `stagiaire`
 --
 
-INSERT INTO `STAGIAIRE` (`id`, `idGroupe`, `nom`, `email`, `password`) VALUES
-(1, 1, 'oussama', 'ayadi.oussama1', 'ayadi'),
-(2, 1, 'maach', 'hamza.maach', 'maach');
+INSERT INTO `stagiaire` (`id`, `nom`, `prenom`, `email`, `password`, `idGroupe`) VALUES
+(1, 'ermich', 'reda', 'ermich.reda', 'reda', 3),
+(2, 'ayadi', 'oussama', 'oussama.ayadi', 'ayadi', 3);
 
 --
--- Index pour les tables déchargées
+-- Indexes for dumped tables
 --
 
 --
--- Index pour la table `ASSURER`
+-- Indexes for table `avoir_reponse`
 --
-ALTER TABLE `ASSURER`
-  ADD PRIMARY KEY (`idFormateur`,`idModule`,`idGroupe`),
-  ADD KEY `FK_ASSURER` (`idGroupe`),
-  ADD KEY `FK_ASSURER3` (`idModule`);
-
---
--- Index pour la table `AVOIR_R`
---
-ALTER TABLE `AVOIR_R`
+ALTER TABLE `avoir_reponse`
   ADD PRIMARY KEY (`idReponse`,`idQuestion`),
   ADD KEY `FK_AVOIR_R` (`idQuestion`);
 
 --
--- Index pour la table `COMPETENCE`
+-- Indexes for table `competence`
 --
-ALTER TABLE `COMPETENCE`
+ALTER TABLE `competence`
   ADD PRIMARY KEY (`id`),
   ADD KEY `FK_COMPOSER` (`idModule`);
 
 --
--- Index pour la table `ETRE_SELECTIONNER`
+-- Indexes for table `etre_choisi`
 --
-ALTER TABLE `ETRE_SELECTIONNER`
-  ADD PRIMARY KEY (`idEvaluation`,`idReponse`,`idQuestion`),
-  ADD KEY `FK_ETRE_SELECTIONNER` (`idQuestion`),
-  ADD KEY `FK_ETRE_SELECTIONNER3` (`idReponse`);
+ALTER TABLE `etre_choisi`
+  ADD PRIMARY KEY (`idEvaluation`,`idQuestion`),
+  ADD KEY `fk_proposer_question1` (`idQuestion`),
+  ADD KEY `fk_proposer_reponse1` (`idReponse`);
 
 --
--- Index pour la table `EVALUATION`
+-- Indexes for table `evaluation`
 --
-ALTER TABLE `EVALUATION`
+ALTER TABLE `evaluation`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_DE` (`idEvaluation`),
-  ADD KEY `FK_FAIRE` (`idStagiaire`);
+  ADD KEY `fk_evaluation_stagiaire1` (`idStagiaire`),
+  ADD KEY `fk_evaluation_examen1` (`idExamen`);
 
 --
--- Index pour la table `EXAMEN`
+-- Indexes for table `examen`
 --
-ALTER TABLE `EXAMEN`
+ALTER TABLE `examen`
   ADD PRIMARY KEY (`id`),
   ADD KEY `FK_CONCERNER` (`idCompetence`);
 
 --
--- Index pour la table `FILIERE`
+-- Indexes for table `filiere`
 --
-ALTER TABLE `FILIERE`
+ALTER TABLE `filiere`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `FORMATEUR`
+-- Indexes for table `formateur`
 --
-ALTER TABLE `FORMATEUR`
+ALTER TABLE `formateur`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `FORMATEUR_FILIERE`
+-- Indexes for table `formateur_filiere`
 --
-ALTER TABLE `FORMATEUR_FILIERE`
+ALTER TABLE `formateur_filiere`
   ADD PRIMARY KEY (`idFormateur`,`idFiliere`),
-  ADD KEY `idFiliere` (`idFiliere`);
+  ADD KEY `FORMATEUR_FILIERE_ibfk_1` (`idFiliere`);
 
 --
--- Index pour la table `GROUPE`
+-- Indexes for table `groupe`
 --
-ALTER TABLE `GROUPE`
+ALTER TABLE `groupe`
   ADD PRIMARY KEY (`id`),
   ADD KEY `FK_INCLURE` (`idFiliere`);
 
 --
--- Index pour la table `MODULE`
+-- Indexes for table `module`
 --
-ALTER TABLE `MODULE`
+ALTER TABLE `module`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `isFiliere` (`idFiliere`);
+  ADD KEY `MODULE_ibfk_1` (`idFiliere`);
 
 --
--- Index pour la table `ModuleAssurer`
+-- Indexes for table `module_assurer`
 --
-ALTER TABLE `ModuleAssurer`
-  ADD PRIMARY KEY (`idFormateur`,`idModule`,`idGroup`),
-  ADD KEY `idGroup` (`idGroup`),
-  ADD KEY `idModule` (`idModule`);
+ALTER TABLE `module_assurer`
+  ADD PRIMARY KEY (`idModule`,`idGroup`),
+  ADD KEY `ModuleAssurer_ibfk_1` (`idFormateur`),
+  ADD KEY `ModuleAssurer_ibfk_2` (`idGroup`);
 
 --
--- Index pour la table `POUR`
+-- Indexes for table `pour`
 --
-ALTER TABLE `POUR`
-  ADD PRIMARY KEY (`idEvaluation`,`idQuestion`),
+ALTER TABLE `pour`
+  ADD PRIMARY KEY (`idExamen`,`idQuestion`),
   ADD KEY `FK_POUR` (`idQuestion`);
 
 --
--- Index pour la table `QUESTION`
+-- Indexes for table `question`
 --
-ALTER TABLE `QUESTION`
+ALTER TABLE `question`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_AVOIR_RC` (`idReponse`);
+  ADD KEY `fk_avoir_rc` (`idReponse`),
+  ADD KEY `fk_question_competence1` (`idCompetence`);
 
 --
--- Index pour la table `REPONSE`
+-- Indexes for table `reponse`
 --
-ALTER TABLE `REPONSE`
+ALTER TABLE `reponse`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `STAGIAIRE`
+-- Indexes for table `stagiaire`
 --
-ALTER TABLE `STAGIAIRE`
+ALTER TABLE `stagiaire`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_APPARTENIR` (`idGroupe`);
+  ADD KEY `fk_stagiaire_groupe1` (`idGroupe`);
 
 --
--- AUTO_INCREMENT pour les tables déchargées
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT pour la table `GROUPE`
+-- AUTO_INCREMENT for table `evaluation`
 --
-ALTER TABLE `GROUPE`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `evaluation`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `STAGIAIRE`
+-- AUTO_INCREMENT for table `examen`
 --
-ALTER TABLE `STAGIAIRE`
+ALTER TABLE `examen`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- Contraintes pour les tables déchargées
+-- AUTO_INCREMENT for table `groupe`
+--
+ALTER TABLE `groupe`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `question`
+--
+ALTER TABLE `question`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `reponse`
+--
+ALTER TABLE `reponse`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `stagiaire`
+--
+ALTER TABLE `stagiaire`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Constraints for dumped tables
 --
 
 --
--- Contraintes pour la table `AVOIR_R`
+-- Constraints for table `avoir_reponse`
 --
-ALTER TABLE `AVOIR_R`
-  ADD CONSTRAINT `FK_AVOIR_R` FOREIGN KEY (`idQuestion`) REFERENCES `QUESTION` (`id`),
-  ADD CONSTRAINT `FK_AVOIR_R2` FOREIGN KEY (`idReponse`) REFERENCES `REPONSE` (`id`);
+ALTER TABLE `avoir_reponse`
+  ADD CONSTRAINT `FK_AVOIR_R` FOREIGN KEY (`idQuestion`) REFERENCES `question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_AVOIR_R2` FOREIGN KEY (`idReponse`) REFERENCES `reponse` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `COMPETENCE`
+-- Constraints for table `competence`
 --
-ALTER TABLE `COMPETENCE`
-  ADD CONSTRAINT `FK_COMPOSER` FOREIGN KEY (`idModule`) REFERENCES `MODULE` (`id`);
+ALTER TABLE `competence`
+  ADD CONSTRAINT `FK_COMPOSER` FOREIGN KEY (`idModule`) REFERENCES `module` (`id`);
 
 --
--- Contraintes pour la table `ETRE_SELECTIONNER`
+-- Constraints for table `etre_choisi`
 --
-ALTER TABLE `ETRE_SELECTIONNER`
-  ADD CONSTRAINT `FK_ETRE_SELECTIONNER` FOREIGN KEY (`idQuestion`) REFERENCES `QUESTION` (`id`),
-  ADD CONSTRAINT `FK_ETRE_SELECTIONNER2` FOREIGN KEY (`idEvaluation`) REFERENCES `EVALUATION` (`id`),
-  ADD CONSTRAINT `FK_ETRE_SELECTIONNER3` FOREIGN KEY (`idReponse`) REFERENCES `REPONSE` (`id`);
+ALTER TABLE `etre_choisi`
+  ADD CONSTRAINT `fk_proposer_evaluation1` FOREIGN KEY (`idEvaluation`) REFERENCES `evaluation` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_proposer_question1` FOREIGN KEY (`idQuestion`) REFERENCES `question` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_proposer_reponse1` FOREIGN KEY (`idReponse`) REFERENCES `reponse` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Contraintes pour la table `EXAMEN`
+-- Constraints for table `evaluation`
 --
-ALTER TABLE `EXAMEN`
-  ADD CONSTRAINT `FK_CONCERNER` FOREIGN KEY (`idCompetence`) REFERENCES `COMPETENCE` (`id`);
+ALTER TABLE `evaluation`
+  ADD CONSTRAINT `fk_evaluation_examen1` FOREIGN KEY (`idExamen`) REFERENCES `examen` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_evaluation_stagiaire1` FOREIGN KEY (`idStagiaire`) REFERENCES `stagiaire` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Contraintes pour la table `FORMATEUR_FILIERE`
+-- Constraints for table `examen`
 --
-ALTER TABLE `FORMATEUR_FILIERE`
-  ADD CONSTRAINT `FORMATEUR_FILIERE_ibfk_1` FOREIGN KEY (`idFiliere`) REFERENCES `FILIERE` (`id`),
-  ADD CONSTRAINT `FORMATEUR_FILIERE_ibfk_2` FOREIGN KEY (`idFormateur`) REFERENCES `FORMATEUR` (`id`);
+ALTER TABLE `examen`
+  ADD CONSTRAINT `FK_CONCERNER` FOREIGN KEY (`idCompetence`) REFERENCES `competence` (`id`);
 
 --
--- Contraintes pour la table `GROUPE`
+-- Constraints for table `formateur_filiere`
 --
-ALTER TABLE `GROUPE`
-  ADD CONSTRAINT `FK_INCLURE` FOREIGN KEY (`idFiliere`) REFERENCES `FILIERE` (`id`);
+ALTER TABLE `formateur_filiere`
+  ADD CONSTRAINT `FORMATEUR_FILIERE_ibfk_1` FOREIGN KEY (`idFiliere`) REFERENCES `filiere` (`id`),
+  ADD CONSTRAINT `FORMATEUR_FILIERE_ibfk_2` FOREIGN KEY (`idFormateur`) REFERENCES `formateur` (`id`);
 
 --
--- Contraintes pour la table `MODULE`
+-- Constraints for table `groupe`
 --
-ALTER TABLE `MODULE`
-  ADD CONSTRAINT `MODULE_ibfk_1` FOREIGN KEY (`idFiliere`) REFERENCES `FILIERE` (`id`);
+ALTER TABLE `groupe`
+  ADD CONSTRAINT `FK_INCLURE` FOREIGN KEY (`idFiliere`) REFERENCES `filiere` (`id`);
 
 --
--- Contraintes pour la table `ModuleAssurer`
+-- Constraints for table `module`
 --
-ALTER TABLE `ModuleAssurer`
-  ADD CONSTRAINT `ModuleAssurer_ibfk_1` FOREIGN KEY (`idFormateur`) REFERENCES `FORMATEUR` (`id`),
-  ADD CONSTRAINT `ModuleAssurer_ibfk_2` FOREIGN KEY (`idGroup`) REFERENCES `GROUPE` (`id`),
-  ADD CONSTRAINT `ModuleAssurer_ibfk_3` FOREIGN KEY (`idModule`) REFERENCES `MODULE` (`id`);
+ALTER TABLE `module`
+  ADD CONSTRAINT `MODULE_ibfk_1` FOREIGN KEY (`idFiliere`) REFERENCES `filiere` (`id`);
 
 --
--- Contraintes pour la table `POUR`
+-- Constraints for table `module_assurer`
 --
-ALTER TABLE `POUR`
-  ADD CONSTRAINT `FK_POUR` FOREIGN KEY (`idQuestion`) REFERENCES `QUESTION` (`id`),
-  ADD CONSTRAINT `FK_POUR2` FOREIGN KEY (`idEvaluation`) REFERENCES `EXAMEN` (`id`);
+ALTER TABLE `module_assurer`
+  ADD CONSTRAINT `ModuleAssurer_ibfk_1` FOREIGN KEY (`idFormateur`) REFERENCES `formateur` (`id`),
+  ADD CONSTRAINT `ModuleAssurer_ibfk_2` FOREIGN KEY (`idGroup`) REFERENCES `groupe` (`id`),
+  ADD CONSTRAINT `ModuleAssurer_ibfk_3` FOREIGN KEY (`idModule`) REFERENCES `module` (`id`);
 
 --
--- Contraintes pour la table `QUESTION`
+-- Constraints for table `pour`
 --
-ALTER TABLE `QUESTION`
-  ADD CONSTRAINT `FK_AVOIR_RC` FOREIGN KEY (`idReponse`) REFERENCES `REPONSE` (`id`);
+ALTER TABLE `pour`
+  ADD CONSTRAINT `FK_POUR` FOREIGN KEY (`idQuestion`) REFERENCES `question` (`id`),
+  ADD CONSTRAINT `FK_POUR2` FOREIGN KEY (`idExamen`) REFERENCES `examen` (`id`);
+
+--
+-- Constraints for table `question`
+--
+ALTER TABLE `question`
+  ADD CONSTRAINT `fk_avoir_rc` FOREIGN KEY (`idReponse`) REFERENCES `reponse` (`id`),
+  ADD CONSTRAINT `fk_question_competence1` FOREIGN KEY (`idCompetence`) REFERENCES `competence` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `stagiaire`
+--
+ALTER TABLE `stagiaire`
+  ADD CONSTRAINT `fk_stagiaire_groupe1` FOREIGN KEY (`idGroupe`) REFERENCES `groupe` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
