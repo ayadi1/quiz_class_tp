@@ -10,7 +10,7 @@ class Filiere
     private int $id;
 
     /** @var string */
-    private string $libFiliere;
+    private string $lib;
 
     /** @var array */
     private array $listFormateurs;
@@ -111,9 +111,9 @@ class Filiere
     /**
      * Get the value of LIB_Filiere
      */ 
-    public function getLibFiliere()
+    public function getLib()
     {
-        return $this->libFiliere;
+        return $this->lib;
     }
 
     /**
@@ -121,10 +121,46 @@ class Filiere
      *
      * @return  self
      */ 
-    public function setLIB_Filiere($libFiliere)
+    public function setLib($lib)
     {
-        $this->libFiliere = $libFiliere;
+        $this->lib = $lib;
 
         return $this;
+    }
+
+    public function getModule($idModule)
+    {
+        $module = new Module();
+        $module->setId($idModule);
+        return $module;
+    }
+
+    public function retournerModules(PDO $conn): array | bool
+    {
+        try{
+            $query = "SELECT * FROM `module` WHERE `idFiliere` = ?";
+            $pdoS = $conn->prepare($query);
+            $pdoS->execute([$this->id]);
+            return $pdoS->fetchAll(PDO::FETCH_CLASS, 'Module');
+        }catch (\Throwable $th){
+            return false;
+        }
+    }
+
+    /**
+     * @return
+     */
+    public function initialisation($conn)
+    {
+        try{
+            $sql = "SELECT * FROM filiere WHERE id = :id";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$this->id]);
+            $filiere=$stmt->fetchObject('Filiere');
+            $this->id = $filiere->id;
+            $this->lib = $filiere->lib;
+        }catch (\Throwable $th){
+            return false;
+        }
     }
 }

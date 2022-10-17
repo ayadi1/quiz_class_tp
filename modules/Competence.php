@@ -10,7 +10,7 @@ class Competence
     private int $id;
 
     /** @var String */
-    private String $libCompetence;
+    private string $lib;
 
     /** @var int */
     private int $idModule;
@@ -24,7 +24,7 @@ class Competence
     }
 
     /**
-     * @return [object Object]
+     * @return
      */
     public function save()
     {
@@ -33,7 +33,7 @@ class Competence
     }
 
     /**
-     * @return [object Object]
+     * @return
      */
     public function update()
     {
@@ -60,7 +60,7 @@ class Competence
     }
 
     /**
-     * @param int $id 
+     * @param int $id
      * @return Competence|bool
      */
     public static function findById(int $id)
@@ -70,73 +70,49 @@ class Competence
     }
 
     /**
-     * @return [object Object]
+     * @return
      */
     public function module()
     {
         // TODO implement here
         return null;
     }
-    public static function returnerExamens(PDO $conn, int $idCompetence)
+
+    public function returnerExamens(PDO $conn): bool|array
     {
         try {
-            $query = "SELECT * FROM `EXAMEN` 
-            WHERE  `idCompetence` = ?";
+            $query = "SELECT * FROM `examen` WHERE  `idCompetence` = ?";
             $pdoS = $conn->prepare($query);
-
-            $pdoS->execute([
-                $idCompetence,  
-            ]);
-
-
+            $pdoS->execute([$this->id]);
             return $pdoS->fetchAll(PDO::FETCH_CLASS, 'Examen');
         } catch (\Throwable $th) {
-            print_r($th);
-            return false;
-        }
-    }
-    public  function returner_Examens(PDO $conn)
-    {
-        try {
-            $query = "SELECT * FROM `EXAMEN` 
-            WHERE  `idCompetence` = ?";
-            $pdoS = $conn->prepare($query);
-
-            $pdoS->execute([
-                $this->id,
-            ]);
-
-
-            return $pdoS->fetchAll(PDO::FETCH_CLASS, 'Module');
-        } catch (\Throwable $th) {
-            print_r($th);
             return false;
         }
     }
 
     /**
      * Get the value of libCompetence
-     */ 
-    public function getLibCompetence()
+     */
+    public function getLib()
     {
-        return $this->libCompetence;
+        return $this->lib;
     }
 
     /**
      * Set the value of libCompetence
      *
      * @return  self
-     */ 
-    public function setLibCompetence($libCompetence)
+     */
+    public function setLib($lib)
     {
-        $this->libCompetence = $libCompetence;
+        $this->lib = $lib;
 
         return $this;
     }
 
     /**
      * Get the value of id
-     */ 
+     */
     public function getId()
     {
         return $this->id;
@@ -146,10 +122,29 @@ class Competence
      * Set the value of id
      *
      * @return  self
-     */ 
+     */
     public function setId($idC)
     {
         $this->id = $idC;
         return $this;
     }
+
+    /**
+     * @return
+     */
+    public function initialisation($conn)
+    {
+        try{
+            $sql = "SELECT * FROM competence WHERE id = :id";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$this->id]);
+            $competence=$stmt->fetchObject('Competence');
+            $this->id = $competence->id;
+            $this->idModule = $competence->idModule;
+            $this->lib = $competence->lib;
+        }catch (\Throwable $th){
+            return false;
+        }
+    }
+
 }

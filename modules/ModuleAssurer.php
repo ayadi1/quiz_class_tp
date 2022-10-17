@@ -86,15 +86,15 @@ class ModuleAssurer
     {
         try {
             $query = "SELECT * 
-            from MODULE md 
+            from module md 
             WHERE md.idFiliere = ?
             AND	md.id in (SELECT ms.idModule 
-                          from ModuleAssurer ms 
+                          from module_assurer ms 
                           WHERE ms.idFormateur = ?)";
             $pdoS = $conn->prepare($query);
 
             $pdoS->execute([
-                $idFormateur,
+                $idFiliere,
                 $idFormateur,
             ]);
 

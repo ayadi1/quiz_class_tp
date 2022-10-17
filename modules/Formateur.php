@@ -13,6 +13,9 @@ class Formateur
     private string $nom;
 
     /** @var string */
+    private string $prenom;
+
+    /** @var string */
     private string $email;
 
     /** @var string */
@@ -23,16 +26,17 @@ class Formateur
     /**
      * Default constructor
      */
-    public function __construct(int $id, string $nom, string $email, string $password)
+    public function __construct(int $id, string $nom, string $prenom, string $email, string $password)
     {
         $this->id = $id;
         $this->nom = $nom;
+        $this->prenom = $prenom;
         $this->email = $email;
         $this->password = $password;
     }
 
     /**
-     * @return [object Object]
+     * @return
      */
     public function save()
     {
@@ -45,7 +49,7 @@ class Formateur
     }
 
     /**
-     * @return [object Object]
+     * @return
      */
     public function update()
     {
@@ -72,7 +76,7 @@ class Formateur
     }
 
     /**
-     * @return [object Object]
+     * @return
      */
     public static function findById(int $id)
     {
@@ -81,7 +85,7 @@ class Formateur
     }
 
     /**
-     * @return batata
+     * @return
      */
     public function modules(): array
     {
@@ -97,19 +101,16 @@ class Formateur
         try {
             $query = "SELECT * FROM `formateur` WHERE `email` = ? ";
             $pdoS = $conn->prepare($query);
-
             $pdoS->execute([
                 $email
             ]);
-
-
             if ($pdoS->rowCount() > 0) {
                 $formateur_row = $pdoS->fetch();
-
                 if ($formateur_row->password === $password) {
                     return new self(
                         $formateur_row->id,
                         $formateur_row->nom,
+                        $formateur_row->prenom,
                         $formateur_row->email,
                         $formateur_row->password
                     );
@@ -120,6 +121,7 @@ class Formateur
             return false;
         }
     }
+
     public function retournerFilieres(PDO $conn): bool|array
     {
         try {

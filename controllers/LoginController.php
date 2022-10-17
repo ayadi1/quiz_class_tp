@@ -18,9 +18,9 @@ class LoginController
         } else {
             $user = Stagiaire::login($this->conn->connect(), $email, $password);
         }
-        if ($user != false) {
+        if ($user !== false) {
             $_SESSION['user'] = serialize($user);
-            header("location:../menu/index.php");
+            header("location:../views/index.php");
         } else{
             header("location: ../login.php?message=Utilisateur ou mot de passe incorrect");
         }
