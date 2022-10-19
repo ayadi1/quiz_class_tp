@@ -10,7 +10,7 @@ class Filiere
     private int $id;
 
     /** @var string */
-    private string $libFiliere;
+    private string $lib;
 
     /** @var array */
     private array $listFormateurs;
@@ -25,7 +25,7 @@ class Filiere
      */
     public function __construct()
     {
-        // ...
+    // ...
     }
 
     /**
@@ -42,7 +42,7 @@ class Filiere
      */
     public function save()
     {
-        // TODO implement here
+    // TODO implement here
     }
 
     /**
@@ -50,7 +50,7 @@ class Filiere
      */
     public function update()
     {
-        // TODO implement here
+    // TODO implement here
     }
 
     /**
@@ -76,7 +76,7 @@ class Filiere
      */
     public static function findById($id)
     {
-        // TODO implement here
+    // TODO implement here
     }
 
     /**
@@ -90,7 +90,7 @@ class Filiere
 
     /**
      * Get the value of id
-     */ 
+     */
     public function getId()
     {
         return $this->id;
@@ -100,7 +100,7 @@ class Filiere
      * Set the value of id
      *
      * @return  self
-     */ 
+     */
     public function setId($id)
     {
         $this->id = $id;
@@ -108,22 +108,31 @@ class Filiere
         return $this;
     }
 
+/**
+ * Get the value of LIB_Filiere
+ */
+
+
     /**
-     * Get the value of LIB_Filiere
+     * Get the value of label
      */ 
-    public function getLibFiliere()
+
+    /**
+     * Get the value of lib
+     */ 
+    public function getLib()
     {
-        return $this->libFiliere;
+        return $this->lib;
     }
 
     /**
-     * Set the value of LIB_Filiere
+     * Set the value of lib
      *
      * @return  self
      */ 
-    public function setLIB_Filiere($libFiliere)
+    public function setLib($lib)
     {
-        $this->libFiliere = $libFiliere;
+        $this->lib = $lib;
 
         return $this;
     }

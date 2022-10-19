@@ -6,35 +6,29 @@ declare(strict_types=1);
 class Reponse
 {
 
-    private  $id;
+    private int $id;
 
-    /** @var text */
-    private text $reponse;
+    /**  */
+    private $lib;
 
     /**
      * Default constructor
      */
     public function __construct()
     {
-        // ...
     }
 
     /**
-     * @return [object Object]
+     * 
      */
-    public function save(): [object Object]
+    public function modifier($conn)
     {
-        // TODO implement here
-        return null;
-    }
-
-    /**
-     * @return [object Object]
-     */
-    public function update(): [object Object]
-    {
-        // TODO implement here
-        return null;
+        $query = "UPDATE reponse SET lib = ? WHERE (id = ?);";
+        $pdoS = $conn->prepare($query);
+        return $pdoS->execute([
+            $this->lib,
+            $this->id
+        ]);
     }
 
     /**
@@ -57,12 +51,66 @@ class Reponse
 
     /**
      * @param  $id 
-     * @return Question|bool
+     * 
      */
-    public static function findById( $id): Question|bool
+    public static function findById($conn, $id): Reponse
     {
-        // TODO implement here
-        return null;
+        $query = "SELECT * FROM reponse WHERE id = ?";
+        $pdoS = $conn->prepare($query);
+        $pdoS->execute([
+            $id
+        ]);
+        return $pdoS->fetchObject('Reponse');
+    }
+
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */ 
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of lib
+     */ 
+    public function getLib()
+    {
+        return $this->lib;
+    }
+
+    /**
+     * Set the value of lib
+     *
+     * @return  self
+     */ 
+    public function setLib($lib)
+    {
+        $this->lib = $lib;
+
+        return $this;
+    }
+
+    public function save($conn)
+    {
+        $query = "INSERT INTO reponse (lib) VALUES (?)";
+        $pdoS = $conn->prepare($query);
+        return $pdoS->execute([
+            $this->lib
+        ]);
     }
 
 }

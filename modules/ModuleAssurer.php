@@ -7,13 +7,13 @@ class ModuleAssurer
 {
 
     /** @var int */
-    private int $id_module;
+    private int $idModule;
 
     /** @var int */
-    private int $id_group;
+    private int $idGroup;
 
     /** @var int */
-    private int $id_formateur;
+    private int $idFormateur;
 
     /**
      * Default constructor
@@ -86,15 +86,15 @@ class ModuleAssurer
     {
         try {
             $query = "SELECT * 
-            from MODULE md 
+            from module md 
             WHERE md.idFiliere = ?
             AND	md.id in (SELECT ms.idModule 
-                          from ModuleAssurer ms 
+                          from module_assurer ms 
                           WHERE ms.idFormateur = ?)";
             $pdoS = $conn->prepare($query);
 
             $pdoS->execute([
-                $idFormateur,
+                $idFiliere,
                 $idFormateur,
             ]);
 
@@ -104,5 +104,65 @@ class ModuleAssurer
             print_r($th);
             return false;
         }
+    }
+
+    /**
+     * Get the value of idModule
+     */ 
+    public function getIdModule()
+    {
+        return $this->idModule;
+    }
+
+    /**
+     * Set the value of idModule
+     *
+     * @return  self
+     */ 
+    public function setIdModule($idModule)
+    {
+        $this->idModule = $idModule;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of idGroup
+     */ 
+    public function getIdGroup()
+    {
+        return $this->idGroup;
+    }
+
+    /**
+     * Set the value of idGroup
+     *
+     * @return  self
+     */ 
+    public function setIdGroup($idGroup)
+    {
+        $this->idGroup = $idGroup;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of idFormateur
+     */ 
+    public function getIdFormateur()
+    {
+        return $this->idFormateur;
+    }
+
+    /**
+     * Set the value of idFormateur
+     *
+     * @return  self
+     */ 
+    public function setIdFormateur($idFormateur)
+    {
+        $this->idFormateur = $idFormateur;
+
+        return $this;
     }
 }

@@ -10,8 +10,8 @@ class Module
     private int $id;
 
     /** @var string */
-    private string $libModule;
-    
+    private string $lib;
+
     /** @var int */
     private string $idFiliere;
     /**
@@ -19,7 +19,7 @@ class Module
      */
     public function __construct()
     {
-        // ...
+    // ...
     }
 
     /**
@@ -77,21 +77,29 @@ class Module
         return [];
     }
 
-    public static function retournerCompetences(PDO $conn,  int $idModule): bool|array
+    public static function retournerCompetences(PDO $conn, int $idModule): bool|array
     {
         try {
-            $query = "SELECT * FROM `COMPETENCE` WHERE `idModule` = ? ";
+            $query = "SELECT * FROM `competence` 
+            WHERE `idModule` = ? ";
             $pdoS = $conn->prepare($query);
-            $pdoS->execute([$idModule]);
+
+            $pdoS->execute([
+                $idModule,
+
+            ]);
+
+
             return $pdoS->fetchAll(PDO::FETCH_CLASS, 'Competence');
-        } catch (\Throwable $th) {
+        }
+        catch (\Throwable $th) {
             return false;
         }
     }
 
     /**
      * Get the value of id
-     */ 
+     */
     public function getId()
     {
         return $this->id;
@@ -101,7 +109,7 @@ class Module
      * Set the value of id
      *
      * @return  self
-     */ 
+     */
     public function setId($id)
     {
         $this->id = $id;
@@ -111,7 +119,7 @@ class Module
 
     /**
      * Get the value of idFiliere
-     */ 
+     */
     public function getIdFiliere()
     {
         return $this->idFiliere;
@@ -121,7 +129,7 @@ class Module
      * Set the value of idFiliere
      *
      * @return  self
-     */ 
+     */
     public function setIdFiliere($idFiliere)
     {
         $this->idFiliere = $idFiliere;
@@ -129,24 +137,53 @@ class Module
         return $this;
     }
 
+
     /**
-     * Get the value of lable
+     * Get the value of lib
      */ 
-    public function getLibModule()
+    public function getLib()
     {
-        return $this->libModule;
+        return $this->lib;
     }
 
     /**
-     * Set the value of lable
+     * Set the value of lib
      *
      * @return  self
      */ 
-    public function setLibModule($libModule)
+    public function setLib($lib)
     {
-        $this->libModule = $libModule;
+        $this->lib = $lib;
 
         return $this;
     }
-}
 
+    public function filiere(PDO $conn)
+    {
+        try {
+            $query = "SELECT * FROM `filiere` WHERE `id` = ?";
+            $pdoS = $conn->prepare($query);
+            $pdoS->execute([
+                $this->idFiliere
+            ]);
+            return $pdoS->fetchAll(PDO::FETCH_CLASS, 'Filiere')[0];
+        }
+        catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+    public function competences(PDO $conn)
+    {
+        try {
+            $query = "SELECT * FROM `competence` WHERE `idModule` = ?";
+            $pdoS = $conn->prepare($query);
+            $pdoS->execute([
+                $this->id
+            ]);
+            return $pdoS->fetchAll(PDO::FETCH_CLASS, 'Filiere');
+        }
+        catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+}

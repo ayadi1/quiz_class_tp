@@ -10,7 +10,7 @@ class Competence
     private int $id;
 
     /** @var String */
-    private String $libCompetence;
+    private string $lib;
 
     /** @var int */
     private int $idModule;
@@ -20,7 +20,7 @@ class Competence
      */
     public function __construct()
     {
-        // ...
+    // ...
     }
 
     /**
@@ -80,38 +80,50 @@ class Competence
     public static function returnerExamens(PDO $conn, int $idCompetence)
     {
         try {
-            $query = "SELECT * FROM `EXAMEN` WHERE  `idCompetence` = ?";
+            $query = "SELECT * FROM `EXAMEN` 
+            WHERE  `idCompetence` = ?";
             $pdoS = $conn->prepare($query);
-            $pdoS->execute([$idCompetence]);
+
+            $pdoS->execute([
+                $idCompetence,
+            ]);
+
+
             return $pdoS->fetchAll(PDO::FETCH_CLASS, 'Examen');
-        } catch (\Throwable $th) {
+        }
+        catch (\Throwable $th) {
+            print_r($th);
+            return false;
+        }
+    }
+    public function returner_Examens(PDO $conn)
+    {
+        try {
+            $query = "SELECT * FROM `EXAMEN` 
+            WHERE  `idCompetence` = ?";
+            $pdoS = $conn->prepare($query);
+
+            $pdoS->execute([
+                $this->id,
+            ]);
+
+
+            return $pdoS->fetchAll(PDO::FETCH_CLASS, 'Module');
+        }
+        catch (\Throwable $th) {
+            print_r($th);
             return false;
         }
     }
 
     /**
      * Get the value of libCompetence
-     */ 
-    public function getLibCompetence()
-    {
-        return $this->libCompetence;
-    }
+     */
 
-    /**
-     * Set the value of libCompetence
-     *
-     * @return  self
-     */ 
-    public function setLibCompetence($libCompetence)
-    {
-        $this->libCompetence = $libCompetence;
-
-        return $this;
-    }
 
     /**
      * Get the value of id
-     */ 
+     */
     public function getId()
     {
         return $this->id;
@@ -121,10 +133,72 @@ class Competence
      * Set the value of id
      *
      * @return  self
-     */ 
+     */
     public function setId($idC)
     {
         $this->id = $idC;
         return $this;
+    }
+
+    /**
+     * Get the value of libel
+     */ 
+   
+
+
+
+
+    /**
+     * Get the value of lib
+     */ 
+    public function getLib()
+    {
+        return $this->lib;
+    }
+
+    /**
+     * Set the value of lib
+     *
+     * @return  self
+     */ 
+    public function setLib($lib)
+    {
+        $this->lib = $lib;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of idModule
+     */ 
+    public function getIdModule()
+    {
+        return $this->idModule;
+    }
+
+    /**
+     * Set the value of idModule
+     *
+     * @return  self
+     */ 
+    public function setIdModule($idModule)
+    {
+        $this->idModule = $idModule;
+
+        return $this;
+    }
+    public function questions(PDO $conn)
+    {
+        try {
+            $query = "SELECT * FROM `question` WHERE `idCompetence` = ?";
+            $pdoS = $conn->prepare($query);
+            $pdoS->execute([
+                $this->id
+            ]);
+            return $pdoS->fetchAll(PDO::FETCH_CLASS, 'Question');
+        }
+        catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }

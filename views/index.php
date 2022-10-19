@@ -25,7 +25,9 @@ $_SESSION['user'] = serialize($user);
         <ul>
             <li>
                 <a href="./gererExamen.php">gerer Examen</a>
-                <a href="./consulterExamen.php">consulter Examen</a>
+            </li>
+            <li>
+                <a href="./question/">gerer question</a>
             </li>
         </ul>
     </nav>
@@ -33,7 +35,6 @@ $_SESSION['user'] = serialize($user);
     <nav>
         <ul>
             <li><a href="./passerExamen.php">passer Examen</a></li>
-            <li><a href="./consulterExamen.php">consulter Examen</a></li>
         </ul>
     </nav>
 <?php endif; ?>

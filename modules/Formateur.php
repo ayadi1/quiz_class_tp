@@ -6,7 +6,7 @@ declare(strict_types=1);
 class Formateur
 {
 
-    /** @var int id*/   
+    /** @var int id*/
     private int $id;
 
     /** @var string */
@@ -80,18 +80,10 @@ class Formateur
         return $id;
     }
 
-    /**
-     * @return batata
-     */
-    public function modules(): array
-    {
-        // TODO implement here
-        return [];
-    }
 
     // login
 
-    public static function login(PDO $conn, string $email, string $password): Formateur | bool
+    public static function login(PDO $conn, string $email, string $password): Formateur|bool
     {
 
         try {
@@ -108,11 +100,12 @@ class Formateur
                         $formateur_row->nom,
                         $formateur_row->email,
                         $formateur_row->password
-                    );
+                        );
                 }
             }
             return false;
-        } catch (\Throwable $th) {
+        }
+        catch (\Throwable $th) {
             return false;
         }
     }
@@ -120,9 +113,9 @@ class Formateur
     public function retournerFilieres(PDO $conn): bool|array
     {
         try {
-            $query = "SELECT * from FILIERE fl 
+            $query = "SELECT * from filiere fl 
             where fl.id in ( SELECT ff.idFiliere 
-                            FROM FORMATEUR_FILIERE ff
+                            FROM formateur_filiere ff
                             WHERE ff.idFormateur = ?
             )";
             $pdoS = $conn->prepare($query);
@@ -131,26 +124,108 @@ class Formateur
                 $this->id
             ]);
 
-            
-            return $pdoS->fetchAll(PDO::FETCH_CLASS,'Filiere');
-        } catch (\Throwable $th) {
+
+            return $pdoS->fetchAll(PDO::FETCH_CLASS, 'Filiere');
+        }
+        catch (\Throwable $th) {
             return false;
         }
     }
 
+    public function filieres(PDO $conn)
+    {
+        try {
+            $query = "SELECT * from filiere fl 
+            where fl.id in ( SELECT ff.idFiliere 
+                            FROM formateur_filiere ff
+                            WHERE ff.idFormateur = ?
+            )";
+            $pdoS = $conn->prepare($query);
+
+            $pdoS->execute([
+                $this->id
+            ]);
+
+            return $pdoS->fetchAll(PDO::FETCH_CLASS, 'Filiere');
+        }
+        catch (\Throwable $th) {
+            return false;
+        }
+    }
+    public function modules(PDO $conn, int $idFiliere = null)
+    {
+        try {
+            $query = null;
+            $args = [];
+            if ($idFiliere) {
+                $query = "SELECT * 
+                from module md 
+                WHERE md.idFiliere = ?
+                AND	md.id in (SELECT ms.idModule 
+                              from module_assurer ms 
+                              WHERE ms.idFormateur = ?)";
+                $args[] = $idFiliere;
+                $args[] = $this->id;
+            }
+            else {
+                $args[] = $this->id;
+
+                $query = "SELECT * 
+            from module md 
+            WHERE md.idFiliere = ?
+            AND	md.id in (SELECT ms.idModule 
+                          from module_assurer ms 
+                          WHERE ms.idFormateur = ?)";
+            }
+            $pdoS = $conn->prepare($query);
+
+            $pdoS->execute($args);
+
+
+            return $pdoS->fetchAll(PDO::FETCH_CLASS, 'Module');
+        }
+        catch (\Throwable $th) {
+            print_r($th);
+            return false;
+        }
+    }
+    public function _modules(PDO $conn, int $idFiliere, int $idFormateur)
+    {
+        try {
+            $query = "SELECT * 
+            from module md 
+            WHERE md.idFiliere = ?
+            AND	md.id in (SELECT ms.idModule 
+                          from module_assurer ms 
+                          WHERE ms.idFormateur = ?)";
+            $pdoS = $conn->prepare($query);
+
+            $pdoS->execute([
+                $idFiliere,
+                $idFormateur,
+            ]);
+
+
+            return $pdoS->fetchAll(PDO::FETCH_CLASS, 'Module');
+        }
+        catch (\Throwable $th) {
+            print_r($th);
+            return false;
+        }
+    }
     /**
      * Get the value of id
-     */ 
+     */
     public function getId()
     {
         return $this->id;
     }
 
-    
+
 
     /**
      * Get the value of listFilieres
-     */ 
+     */
     public function getListFilieres()
     {
         return $this->listFilieres;
@@ -160,7 +235,7 @@ class Formateur
      * Set the value of listFilieres
      *
      * @return  self
-     */ 
+     */
     public function setListFilieres($listFilieres)
     {
         $this->listFilieres = $listFilieres;
@@ -170,7 +245,7 @@ class Formateur
 
     /**
      * Get the value of password
-     */ 
+     */
     public function getPassword()
     {
         return $this->password;
@@ -180,7 +255,7 @@ class Formateur
      * Set the value of password
      *
      * @return  self
-     */ 
+     */
     public function setPassword($password)
     {
         $this->password = $password;
